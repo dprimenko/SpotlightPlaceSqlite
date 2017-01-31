@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/clAskNumberLogin"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:background="@color/defaultBackgroundColor">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:theme="@style/AppTheme.AppBarOverlay">
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbarAskNumberLogin"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:theme="@style/AppTheme.AppBarOverlay">
+        </android.support.v7.widget.Toolbar>
+    </android.support.design.widget.AppBarLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        >
+        <android.support.v7.widget.CardView
+            android:id="@+id/cwInfoVerifyNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            app:contentPaddingLeft="@dimen/cw_horizontal_default_padding"
+            app:contentPaddingRight="@dimen/cw_horizontal_default_padding"
+            app:contentPaddingTop="@dimen/cw_vertical_default_padding"
+            app:contentPaddingBottom="@dimen/cw_vertical_default_padding"
+            >
+
+            <TextView
+                android:id="@+id/txvInfoAskNumberLogin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/txvInfoAskNumberLogin"
+                android:textColor="@color/colorText"
+                android:textSize="16sp"/>
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/cwAskNumberLogin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/cwInfoVerifyNumber"
+            app:contentPaddingLeft="@dimen/cw_horizontal_default_padding"
+            app:contentPaddingRight="@dimen/cw_horizontal_default_padding"
+            app:contentPaddingTop="@dimen/cw_vertical_default_padding"
+            app:contentPaddingBottom="@dimen/cw_vertical_default_padding">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/txvAskNumberLogin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/txvAskNumberLogin"
+                    android:textSize="16sp"
+                    android:textColor="@color/colorText"
+                    />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/txvAskNumberLogin">
+
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:src="@drawable/ic_plus"
+                        android:tint="@color/colorIcons"
+                        android:layout_gravity="center"/>
+                    <EditText
+                        android:id="@+id/edtAskRegionCodeLogin"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:textAlignment="center"
+                        android:layout_weight="3"
+                        android:maxLength="2"
+                        android:layout_gravity="bottom"/>
+                    <EditText
+                        android:id="@+id/edtAskNumberLogin"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:layout_weight="7"
+                        android:maxLength="9"
+                        android:layout_gravity="bottom"/>
+                    <Button
+                        android:id="@+id/btnOkAskNumberLogin"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:background="@color/colorAccent"
+                        android:textColor="@color/white"
+                        android:text="OK"/>
+                </LinearLayout>
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
+    </RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="google_place_api">AIzaSyDWh44iPiKxR1EFoo9YSJPFkkLZ7JldO6c</string>
+    <string name="app_name">Spotlight Place</string>
+    <string name="about">Spotlight Place es una aplicación que ayuda a sus usuarios encontrar eventos interesantes a lo que asistir o crear los suyos propios.</string>
+    <string name="action_settings">Configuración</string>
+    <string name="data_empty">Debe ingresar algo en los campos</string>
+    <string name="facebook">Me gusta en Facebook</string>
+    <string name="git_hub">Visítenos en GitHub</string>
+    <string name="google_play">Votenos en Play Store</string>
+    <string name="invalid_number_phone_length">Número de móvil invalido, vuelva a intentarlo</string>
+    <string name="item_main_manu_about">Acerca de</string>
+    <string name="item_main_manu_preferences">Preferencias</string>
+    <string name="item_main_manu_search">Buscar</string>
+    <string name="validate_phone_alert1">Procedemos a verificar su número de móvil:</string>
+    <string name="validate_phone_alert2">¿Es correcto, o quiere editarlo?</string>
+    <string name="ok">Ok</string>
+    <string name="edit">Editar</string>
+    <string name="pref_general">Preferencias generales</string>
+    <string name="pref_language">Lenguaje</string>
+    <string name="pref_language_summary">Seleccione su lenguaje</string>
+    <string name="spinnerCategoriesManageEvent">Categorias</string>
+    <string name="subHeaderFromManageEvent">Desde</string>
+    <string name="subHeaderToManageEvent">Hasta</string>
+    <string name="tab_in_progress">En curso</string>
+    <string name="tab_relevant">Relevantes</string>
+    <string name="tab_scheduled">Programados</string>
+    <string name="tilAddressManageEvent">Dirección</string>
+    <string name="tilDescriptionManageEvent">Descripción</string>
+    <string name="tilTitleManageEvent">Título</string>
+    <string name="twitter">Síganos en Twitter</string>
+    <string name="txvAskNumberLogin">Por favor confime el código de su país e ingrese su número de móvil.</string>
+    <string name="txvInfoAskNumberLogin">Spotlight  Place le enviará un SMS con la clave secreta para verificar su número de móvil.</string>
+    <string name="txvInfoVerifySmsCodeLogin">Hemos enviado el codigo secreto a:</string>
+    <string name="txvInputVerifySmsCodeLogin">Ingrese la clave secreta aquí:</string>
+    <string name="wrong_secret_code">Clave secreta incorrecta, inténtelo de nuevo</string>
+    <string name="userDataEmpty">Los datos de usuario no pueden estar vacíos</string>
+    <string name="error_address">Dirección desconocida</string>
+    <string name="verify_code">Verificar código</string>
+    <string name="upload_message">Subiendo...</string>
+</resources>

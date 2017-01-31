@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Spotlight Place</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="tilTitleManageEvent">Title</string>
+    <string name="tilAddressManageEvent">Address</string>
+    <string name="tilDescriptionManageEvent">Description</string>
+    <string name="spinnerCategoriesManageEvent">Categories</string>
+    <string name="subHeaderFromManageEvent">From</string>
+    <string name="subHeaderToManageEvent">To</string>
+
+    <string name="tab_relevant">Relevant</string>
+    <string name="tab_in_progress">In progress</string>
+    <string name="tab_scheduled">Scheduled</string>
+
+    <!-- Login -->
+    <string name="txvInfoAskNumberLogin">Spotlight Place will send a one time SMS message to verify your phone number.</string>
+    <string name="txvAskNumberLogin">Please confirm your country code and enter your phone number.</string>
+    <string name="txvInfoVerifySmsCodeLogin">We send you secret code to:</string>
+    <string name="txvInputVerifySmsCodeLogin">Input secret code here:</string>
+
+    <!--Errors Login-->
+    <string name="data_empty">You must enter value in the field</string>
+    <string name="invalid_number_phone_length">Invalid number phone, please try again</string>
+    <string name="wrong_secret_code">Wrong secret code, please try again</string>
+
+    <!-- Main menu -->
+    <string name="item_main_manu_search">Search</string>
+    <string name="item_main_manu_preferences">Preferences</string>
+    <string name="item_main_manu_about">About</string>
+
+    <!-- General preferences -->
+    <string name="pref_general">General preferences</string>
+    <string name="pref_language">Language</string>
+    <string name="pref_language_summary">Select your language</string>
+
+    <string name="validate_phone_alert1">We will be verifying the phone number:</string>
+    <string name="validate_phone_alert2">Is this OK, or would you like to edit the number?</string>
+    <string name="ok">Ok</string>
+    <string name="edit">Edit</string>
+    <string-array name="pref_language_entries">
+        <item>English</item>
+        <item>Español</item>
+    </string-array>
+    <string-array name="pref_language_values">
+        <item>en-GB</item>
+        <item>es-ES</item>
+    </string-array>
+    <!-- About -->
+    <string name="about">Spotlight Place is a social app that helps it\'s users find interesting events to attend and create their own.</string>
+
+    <!-- Social -->
+    <string name="facebook">Like on Facebook</string>
+    <string name="twitter">Follow us on Twitter</string>
+    <string name="google_play">Rate us on Play Store</string>
+    <string name="git_hub">Visit us on GitHub</string>
+
+    <string name="error_address">Unknown address</string>
+    <string name="userDataEmpty">User data cannot be empty</string>
+    <string name="verify_code">Verify code</string>
+    <string name="upload_message">Uploading...</string>
+</resources>

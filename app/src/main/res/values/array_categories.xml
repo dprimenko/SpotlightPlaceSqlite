@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="array_categories">
+        <item>Disco</item>
+        <item>Pub</item>
+        <item>Public</item>
+        <item>Festival</item>
+    </string-array>
+</resources>
