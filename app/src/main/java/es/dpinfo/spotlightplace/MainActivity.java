@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Main
         ft.commit();
     }
 
-    @Override
+    /*@Override
     public void onBackPressed() {
 
         if (getSupportFragmentManager().getBackStackEntryCount() > 2) {
@@ -100,5 +100,5 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Main
         } else {
             super.onBackPressed();
         }
-    }
+    }*/
 }

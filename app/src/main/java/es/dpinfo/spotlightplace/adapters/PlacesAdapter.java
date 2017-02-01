@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,11 +42,6 @@ public class PlacesAdapter extends ArrayAdapter<SpotPlace> implements ApiDAO.Gma
 
     private RequestQueue queue;
     private RequestUserDataListener requestUserDataListener;
-    public static final int IN_PROGRESS_ADAPTER = 21;
-    public static final int SCHEDULED_ADAPTER = 22;
-    public static final int PAST_ADAPTER = 23;
-
-    private int typeSelected;
 
     public interface RequestUserDataListener {
         void onResponseSuccess(String nick, String fullName, String profileImg);
@@ -53,10 +49,8 @@ public class PlacesAdapter extends ArrayAdapter<SpotPlace> implements ApiDAO.Gma
 
     private PlaceHolder holder;
 
-    public PlacesAdapter(Context context, int resource, int type) {
+    public PlacesAdapter(Context context, int resource) {
         super(context, resource);
-
-        this.typeSelected = type;
     }
 
     public void addPlace(SpotPlace spotPlace) {
@@ -92,9 +86,9 @@ public class PlacesAdapter extends ArrayAdapter<SpotPlace> implements ApiDAO.Gma
             holder = (PlaceHolder) view.getTag();
         }
 
-        if (typeSelected == IN_PROGRESS_ADAPTER) {
-            holder.fabLocation.setVisibility(View.GONE);
-            holder.fabLocation.setVisibility(View.GONE);
+        if (checkDateTime(item.getmDateTimeFrom(), item.getmDateTimeTo())) {
+            holder.fabLocation.setVisibility(View.VISIBLE);
+            holder.fabViewMore.setVisibility(View.VISIBLE);
         }
 
         getUserData(position);
@@ -131,6 +125,27 @@ public class PlacesAdapter extends ArrayAdapter<SpotPlace> implements ApiDAO.Gma
 
     private void getUserData(final int item) {
         new GetUserData().execute(new Integer[]{new Integer(item)});
+    }
+
+    public boolean checkDateTime(String from, String to) {
+        boolean result = false;
+
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        Date dateFrom = null;
+        Date dateTo = null;
+        Calendar now = Calendar.getInstance();
+        try {
+            dateFrom = formatter.parse(from);
+            dateTo = formatter.parse(to);
+
+            if ((now.getTimeInMillis() >= dateFrom.getTime()) && (now.getTimeInMillis() <= dateTo.getTime())) {
+                result = true;
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return result;
     }
 
     class GetUserData extends AsyncTask<Integer, Void, Void> {

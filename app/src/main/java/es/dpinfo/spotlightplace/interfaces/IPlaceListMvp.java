@@ -1,5 +1,8 @@
 package es.dpinfo.spotlightplace.interfaces;
 
+import android.content.Context;
+import android.support.v4.app.Fragment;
+
 import es.dpinfo.spotlightplace.adapters.PlacesAdapter;
 import es.dpinfo.spotlightplace.models.SpotPlace;
 
@@ -15,6 +18,7 @@ public interface IPlaceListMvp {
     }
 
     interface Presenter {
+        void requestPlaces(Fragment context);
         void addPlaceToAdapter(SpotPlace spotPlace);
     }
 }
