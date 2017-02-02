@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/action_home"
+            android:title="Inicio"
+            android:icon="@drawable/home"/>
+
+        <item
+            android:id="@+id/action_list"
+            android:title="Productos"
+            android:icon="@drawable/format_list_bulleted" />
+
+        <item
+            android:id="@+id/pharmacy"
+            android:title="Farmacias"
+            android:icon="@drawable/hospital"/>
+
+        <item
+            android:id="@+id/action_sales"
+            android:title="Ventas"
+            android:icon="@drawable/shopping"/>
+
+        <item
+            android:id="@+id/action_categories"
+            android:title="Categorias"
+            android:icon="@drawable/tag"/>
+    </group>
+
+    <item
+        android:id="@+id/subheader"
+        android:title="Settings">
+        <menu>
+
+            <item
+                android:id="@+id/action_help"
+                android:title="Help"
+                android:icon="@drawable/help_circle"/>
+
+            <item
+                android:id="@+id/action_settings"
+                android:title="Settigs"
+                android:icon="@drawable/settings"/>
+        </menu>
+    </item>
+</menu>

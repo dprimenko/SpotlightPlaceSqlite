@@ -2,7 +2,10 @@ package es.dpinfo.spotlightplace;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.internal.NavigationMenu;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.FrameLayout;
 
@@ -24,11 +27,15 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Main
     private ProfileFragment profileFragment;
     private EditProfileFragment editProfileFragment;
     private FragmentTransaction ft;
+    private NavigationView navigationMenu;
+    private DrawerLayout drawerLayout;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.layout_navigation);
+        navigationMenu = (NavigationView) findViewById(R.id.navigation_view);
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         flMain = (FrameLayout) findViewById(R.id.fl_main);
 
