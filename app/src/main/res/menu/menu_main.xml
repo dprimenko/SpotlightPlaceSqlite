@@ -7,16 +7,4 @@
         android:icon="@drawable/ic_magnify"
         android:title="@string/item_main_manu_search"
         app:showAsAction="always"/>
-    <item
-        android:id="@+id/action_profile_main"
-        android:title="Perfil"
-        app:showAsAction="never"/>
-    <item
-        android:id="@+id/action_preferences_main"
-        android:title="@string/item_main_manu_preferences"
-        app:showAsAction="never"/>
-    <item
-        android:id="@+id/action_about_main"
-        android:title="@string/item_main_manu_about"
-        app:showAsAction="never"/>
 </menu>

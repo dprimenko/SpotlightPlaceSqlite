@@ -2,44 +2,37 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/action_home"
-            android:title="Inicio"
-            android:icon="@drawable/home"/>
+            android:id="@+id/action_profile_main"
+            android:title="@string/navigation_profile"
+            android:icon="@drawable/ic_account"/>
+        <item
+            android:id="@+id/action_relevant"
+            android:title="@string/navigation_relevants"
+            android:icon="@drawable/star_circle"/>
 
         <item
-            android:id="@+id/action_list"
-            android:title="Productos"
-            android:icon="@drawable/format_list_bulleted" />
+            android:id="@+id/action_inprogress"
+            android:title="@string/navigation_in_progress"
+            android:icon="@drawable/play_circle" />
 
         <item
-            android:id="@+id/pharmacy"
-            android:title="Farmacias"
-            android:icon="@drawable/hospital"/>
-
-        <item
-            android:id="@+id/action_sales"
-            android:title="Ventas"
-            android:icon="@drawable/shopping"/>
-
-        <item
-            android:id="@+id/action_categories"
-            android:title="Categorias"
-            android:icon="@drawable/tag"/>
+            android:id="@+id/action_scheduled"
+            android:title="@string/navigation_scheduled"
+            android:icon="@drawable/calendar_check"/>
     </group>
 
     <item
         android:id="@+id/subheader"
-        android:title="Settings">
+        android:title="@string/action_settings">
         <menu>
-
             <item
-                android:id="@+id/action_help"
-                android:title="Help"
+                android:id="@+id/action_about_main"
+                android:title="@string/item_main_manu_about"
                 android:icon="@drawable/help_circle"/>
 
             <item
-                android:id="@+id/action_settings"
-                android:title="Settigs"
+                android:id="@+id/action_preferences_main"
+                android:title="@string/pref_general"
                 android:icon="@drawable/settings"/>
         </menu>
     </item>

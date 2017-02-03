@@ -2,11 +2,13 @@ package es.dpinfo.spotlightplace;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.internal.NavigationMenu;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.widget.FrameLayout;
 
 import es.dpinfo.spotlightplace.fragments.EditProfileFragment;
@@ -27,17 +29,20 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Main
     private ProfileFragment profileFragment;
     private EditProfileFragment editProfileFragment;
     private FragmentTransaction ft;
-    private NavigationView navigationMenu;
+    private NavigationView navigationView;
     private DrawerLayout drawerLayout;
+    private Toolbar toolbarMain;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_navigation);
-        navigationMenu = (NavigationView) findViewById(R.id.navigation_view);
+        navigationView = (NavigationView) findViewById(R.id.navigation_view);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-
+        toolbarMain = (Toolbar) findViewById(R.id.toolbar_main);
         flMain = (FrameLayout) findViewById(R.id.fl_main);
+
+        setSupportActionBar(toolbarMain);
 
         if (AccountPreferences.getInstance(this).getNick().length() < 1) {
 
@@ -97,6 +102,36 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Main
         ft.replace(R.id.fl_main, editProfileFragment);
         ft.addToBackStack("PROFILE");
         ft.commit();
+    }
+
+    public void setupDrawerContent() {
+        drawerLayout.openDrawer(GravityCompat.START);
+
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem item) {
+                item.setChecked(true);
+
+                switch (item.getItemId()) {
+                    case R.id.action_profile_main:
+                        onProfileFragment();
+                        break;
+                    case R.id.action_relevant:
+                        break;
+                    case R.id.action_inprogress:
+                        break;
+                    case R.id.action_scheduled:
+                        break;
+                }
+
+                drawerLayout.closeDrawer(GravityCompat.START);
+                return true;
+            }
+        });
+    }
+
+    public NavigationView getNavigationView() {
+        return navigationView;
     }
 
     /*@Override

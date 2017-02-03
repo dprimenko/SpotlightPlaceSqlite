@@ -1,35 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_navigation_drawer"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="192dp"
-    android:background="@drawable/header"
     android:padding="16dp"
-    android:theme="@style/ThemeOverlay.AppCompat.Dark"
     android:gravity="center_vertical">
 
     <de.hdodenhof.circleimageview.CircleImageView
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/profile_image"
+        android:id="@+id/imv_profile_navigation"
         android:layout_width="64dp"
         android:layout_height="64dp"
-        android:src="@drawable/profile"
-        app:civ_border_width="2dp"
-        app:civ_border_color="#FF000000"/>
+        app:civ_border_width="1dp"
+        app:civ_border_color="@color/colorDivider"
+        />
 
     <TextView
+        android:id="@+id/txv_fullname_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="David Primenko"
         android:textColor="@android:color/white"
         android:layout_marginTop="16dp"/>
 
     <TextView
+        android:id="@+id/txv_email_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="davidprimenko@gmail.com"
         android:textColor="@android:color/white"
         style="@style/Base.Widget.AppCompat.Spinner"/>
 </LinearLayout>

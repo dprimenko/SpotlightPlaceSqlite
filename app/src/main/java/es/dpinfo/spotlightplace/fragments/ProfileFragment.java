@@ -27,7 +27,6 @@ import es.dpinfo.spotlightplace.presenters.PlacesListPresenter;
  */
 public class ProfileFragment extends Fragment {
 
-    private Toolbar toolbarProfile;
     private CircleImageView imvProfileImg;
     private TextView txvUserFullName;
     private PlacesListPresenter.ActionsFragmentListener mCallback;
@@ -79,7 +78,6 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        toolbarProfile = (Toolbar) view.findViewById(R.id.toolbar_profile);
         imvProfileImg = (CircleImageView) view.findViewById(R.id.imv_profile_img);
         txvUserFullName = (TextView) view.findViewById(R.id.txv_user_fullname);
         setProfileInfo();
@@ -91,7 +89,8 @@ public class ProfileFragment extends Fragment {
 
         AccountPreferences preferences = AccountPreferences.getInstance(getActivity());
 
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbarProfile);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setIcon(null);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.arrow_left);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(preferences.getNick());
         Picasso.with(getActivity()).load(preferences.getProfileImg()).into(imvProfileImg);

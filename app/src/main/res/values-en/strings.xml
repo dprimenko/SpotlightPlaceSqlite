@@ -60,4 +60,9 @@
     <string name="userDataEmpty">User data cannot be empty</string>
     <string name="verify_code">Verify code</string>
     <string name="upload_message">Uploading...</string>
+
+    <string name="navigation_relevants">Relevant</string>
+    <string name="navigation_in_progress">In progress</string>
+    <string name="navigation_scheduled">Scheduled</string>
+    <string name="navigation_profile">Profile</string>
 </resources>

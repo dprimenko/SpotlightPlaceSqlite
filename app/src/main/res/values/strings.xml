@@ -38,4 +38,8 @@
     <string name="error_address">Dirección desconocida</string>
     <string name="verify_code">Verificar código</string>
     <string name="upload_message">Subiendo...</string>
+    <string name="navigation_relevants">Relevantes</string>
+    <string name="navigation_in_progress">En curso</string>
+    <string name="navigation_scheduled">Programados</string>
+    <string name="navigation_profile">Perfil</string>
 </resources>
