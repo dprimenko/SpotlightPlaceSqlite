@@ -13,6 +13,7 @@ public interface ISetupMvp {
 
     interface View {
         void startMainActivity();
+        void loadAskNumberFragment();
         void closeApp();
     }
     interface Presenter {

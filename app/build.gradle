@@ -32,4 +32,5 @@ dependencies {
     compile 'com.wdullaer:materialdatetimepicker:2.5.0'
     compile 'com.weiwangcn.betterspinner:library:1.1.0'
     compile 'de.hdodenhof:circleimageview:2.1.0'
+    compile 'joda-time:joda-time:2.9.4'
 }

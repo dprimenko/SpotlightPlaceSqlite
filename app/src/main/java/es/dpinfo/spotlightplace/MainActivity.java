@@ -9,10 +9,11 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.FrameLayout;
 
 import es.dpinfo.spotlightplace.fragments.EditProfileFragment;
-import es.dpinfo.spotlightplace.fragments.MainFragment;
+import es.dpinfo.spotlightplace.fragments.RelevantFragment;
 import es.dpinfo.spotlightplace.fragments.ManageEventFragment;
 import es.dpinfo.spotlightplace.fragments.ProfileFragment;
 import es.dpinfo.spotlightplace.preferences.AccountPreferences;
@@ -21,17 +22,17 @@ import es.dpinfo.spotlightplace.presenters.PlacesListPresenter;
 /**
  * Created by dprimenko on 3/01/17.
  */
-public class MainActivity extends AppCompatActivity implements MainFragment.MainFragmentListener, PlacesListPresenter.ActionsFragmentListener, EditProfileFragment.EditProfileFragmentListener, ProfileFragment.ProfileFragmentListener {
+public class MainActivity extends AppCompatActivity implements RelevantFragment.MainFragmentListener, PlacesListPresenter.ActionsFragmentListener, EditProfileFragment.EditProfileFragmentListener, ProfileFragment.ProfileFragmentListener {
 
     private FrameLayout flMain;
-    private MainFragment mainFragment;
+    private RelevantFragment relevantFragment;
     private ManageEventFragment manageEventFragment;
     private ProfileFragment profileFragment;
     private EditProfileFragment editProfileFragment;
     private FragmentTransaction ft;
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
-    private Toolbar toolbarMain;
+    public Toolbar toolbarMain;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Main
 
         setSupportActionBar(toolbarMain);
 
-        if (AccountPreferences.getInstance(this).getNick().length() < 1) {
+        if (AccountPreferences.getInstance(this).getUsername().length() < 1) {
 
             Bundle bundle = new Bundle();
             bundle.putBoolean("initial", true);
@@ -53,8 +54,8 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Main
             getSupportFragmentManager().beginTransaction().replace(R.id.fl_main, editProfileFragment).commit();
         } else {
 
-            mainFragment = MainFragment.newInstance(null);
-            getSupportFragmentManager().beginTransaction().replace(R.id.fl_main, mainFragment).commit();
+            relevantFragment = RelevantFragment.newInstance(null);
+            getSupportFragmentManager().beginTransaction().replace(R.id.fl_main, relevantFragment).commit();
         }
 
     }
@@ -68,6 +69,8 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Main
         ft.replace(R.id.fl_main, manageEventFragment);
         ft.addToBackStack("HOME");
         ft.commit();
+
+        toolbarMain.setVisibility(View.GONE);
     }
 
     @Override
@@ -83,10 +86,10 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Main
     @Override
     public void onMainFragment() {
 
-        mainFragment = MainFragment.newInstance(null);
+        relevantFragment = RelevantFragment.newInstance(null);
 
         ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.fl_main, mainFragment);
+        ft.replace(R.id.fl_main, relevantFragment);
         ft.commit();
     }
 

@@ -18,13 +18,13 @@ import android.widget.TextView;
 import es.dpinfo.spotlightplace.R;
 import es.dpinfo.spotlightplace.interfaces.IVerifyMvp;
 import es.dpinfo.spotlightplace.presenters.VerifyNumPresenter;
+import es.dpinfo.spotlightplace.schemas.SpotlightContract;
 
 /**
  * Created by dprimenko on 3/01/17.
  */
 public class VerifyNumFragment extends Fragment implements IVerifyMvp.View {
 
-    //private InputMethodManager inputManager;
     private TextView txvNumberVeryfySmsCodeLogin;
     private EditText edtSecretCodeVerifySmsCodeLogin;
     private Button btnOkVerifySmsCodeLogin;
@@ -63,11 +63,11 @@ public class VerifyNumFragment extends Fragment implements IVerifyMvp.View {
 
         if (rootView != null) {
 
-            txvNumberVeryfySmsCodeLogin = (TextView) rootView.findViewById(R.id.txvNumberVeryfySmsCodeLogin);
-            edtSecretCodeVerifySmsCodeLogin = (EditText) rootView.findViewById(R.id.edtSecretCodeVerifySmsCodeLogin);
+            txvNumberVeryfySmsCodeLogin = (TextView) rootView.findViewById(R.id.txv_number_veryfy_sms_code_login);
+            edtSecretCodeVerifySmsCodeLogin = (EditText) rootView.findViewById(R.id.edt_secret_code_verify_sms_code_login);
             btnCheckSecretCode = (Button) rootView.findViewById(R.id.btnCheckSecretCode);
-            btnOkVerifySmsCodeLogin = (Button) rootView.findViewById(R.id.btnOkVerifySmsCodeLogin);
-            rlVerifySmsCodeLogin = (RelativeLayout) rootView.findViewById(R.id.rlVerifySmsCodeLogin);
+            btnOkVerifySmsCodeLogin = (Button) rootView.findViewById(R.id.btn_on_verify_sms_code_login);
+            rlVerifySmsCodeLogin = (RelativeLayout) rootView.findViewById(R.id.rl_verify_sms_code_login);
 
             txvNumberVeryfySmsCodeLogin.setText(getArguments().getString("numberPhoneView"));
 
@@ -90,20 +90,16 @@ public class VerifyNumFragment extends Fragment implements IVerifyMvp.View {
                 }
             });
 
-            //inputManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-
-
             btnOkVerifySmsCodeLogin.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
                     String secretCode = edtSecretCodeVerifySmsCodeLogin.getText().toString();
-                    //inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 
                     if (presenter.validateSecretCode(secretCode)) {
 
                         Bundle bundle = new Bundle();
-                        bundle.putString("numberPhone", getArguments().getString("numberPhone"));
+                        bundle.putString(SpotlightContract.UserEntry.KEY_NUMBER_PHONE, getArguments().getString(SpotlightContract.UserEntry.KEY_NUMBER_PHONE));
                         mCallback.onCodeVerified(bundle);
                     }
                     else {

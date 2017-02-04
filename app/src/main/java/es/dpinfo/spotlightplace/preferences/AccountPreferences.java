@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import es.dpinfo.spotlightplace.interfaces.IPreferences;
+import es.dpinfo.spotlightplace.schemas.SpotlightContract;
 
 /**
  * Created by dprimenko on 26/01/17.
@@ -11,24 +12,11 @@ import es.dpinfo.spotlightplace.interfaces.IPreferences;
 public class AccountPreferences implements IPreferences {
 
     private static AccountPreferences accountPrefences;
-    private Context context;
-
-    public static final String ID = "_id";
-    public static final String NUMBER_PHONE = "number_phone";
-    public static final String API_KEY = "sp_api_key_id";
-    public static final String PROFILE_IMG = "profile_img";
-    public static final String NICK = "nick";
-    public static final String FULL_NAME = "full_name";
-    public static final String EMAIL = "email";
-    public static final String TYPE_ACC = "type_acc";
-    public static final String LAST_LOGIN = "last_login";
-    public static final String CREATED_ON = "created";
+    private static final String ACC_PREFERENCES = "acc_pref";
     private SharedPreferences sharedPreferences;
 
-
     private AccountPreferences(Context context) {
-        this.context = context;
-        sharedPreferences = context.getSharedPreferences("acc_pref", this.MODE);
+        sharedPreferences = context.getSharedPreferences(ACC_PREFERENCES, this.MODE);
     }
 
     public static AccountPreferences getInstance(Context context) {
@@ -44,50 +32,54 @@ public class AccountPreferences implements IPreferences {
     }
 
     public boolean accountPrefsExists() {
-        return sharedPreferences.contains(NUMBER_PHONE);
+        return sharedPreferences.contains(SpotlightContract.UserEntry.KEY_NUMBER_PHONE);
     }
 
     //region SETTER
 
 
     public void putId(String id) {
-        getEditor().putString(ID, id).apply();
+        getEditor().putString(SpotlightContract.UserEntry.KEY_ID, id).apply();
     }
 
     public void putNumberPhone(String nphone) {
-        getEditor().putString(NUMBER_PHONE, nphone).apply();
+        getEditor().putString(SpotlightContract.UserEntry.KEY_NUMBER_PHONE, nphone).apply();
     }
 
-    public void putApiKey(String apiKey) {
-        getEditor().putString(API_KEY, apiKey).apply();
+    public void putPublicApiKey(String publicApiKey) {
+        getEditor().putString(SpotlightContract.UserEntry.KEY_PUBLIC_API_KEY, publicApiKey).apply();
     }
 
     public void putProfileImg(String imgUrl) {
-        getEditor().putString(PROFILE_IMG, imgUrl).apply();
+        getEditor().putString(SpotlightContract.UserEntry.KEY_PROFILE_IMG, imgUrl).apply();
     }
 
-    public void putNick(String nick) {
-        getEditor().putString(NICK, nick).apply();
+    public void putBackgroundImg(String imgUrl) {
+        getEditor().putString(SpotlightContract.UserEntry.KEY_BACKGROUND_IMG, imgUrl).apply();
+    }
+
+    public void putUsername(String username) {
+        getEditor().putString(SpotlightContract.UserEntry.KEY_USERNAME, username).apply();
     }
 
     public void putFullName(String fullName) {
-        getEditor().putString(FULL_NAME, fullName).apply();
+        getEditor().putString(SpotlightContract.UserEntry.KEY_FULLNAME, fullName).apply();
     }
 
     public void putEmail(String email) {
-        getEditor().putString(EMAIL, email).apply();
+        getEditor().putString(SpotlightContract.UserEntry.KEY_EMAIL, email).apply();
     }
 
     public void putTypeAcc(String typeAcc) {
-        getEditor().putString(TYPE_ACC, typeAcc).apply();
+        getEditor().putString(SpotlightContract.UserEntry.KEY_TYPEACC, typeAcc).apply();
     }
 
     public void putLastLogin(String lastLogin) {
-        getEditor().putString(LAST_LOGIN, lastLogin).apply();
+        getEditor().putString(SpotlightContract.UserEntry.KEY_LAST_LOGIN, lastLogin).apply();
     }
 
-    public void putCreatedOn(String createdOn) {
-        getEditor().putString(CREATED_ON, createdOn).apply();
+    public void putCreatedAt(String createdAt) {
+        getEditor().putString(SpotlightContract.UserEntry.KEY_CREATED_AT, createdAt).apply();
     }
 
     //endregion
@@ -95,43 +87,47 @@ public class AccountPreferences implements IPreferences {
     //region GETTER
 
     public String getId() {
-        return sharedPreferences.getString(ID, null);
+        return sharedPreferences.getString(SpotlightContract.UserEntry.KEY_ID, null);
     }
 
     public String getNumberPhone() {
-        return sharedPreferences.getString(NUMBER_PHONE, null);
+        return sharedPreferences.getString(SpotlightContract.UserEntry.KEY_NUMBER_PHONE, null);
     }
 
-    public String getApiKey() {
-        return sharedPreferences.getString(API_KEY, null);
+    public String getPublicApiKey() {
+        return sharedPreferences.getString(SpotlightContract.UserEntry.KEY_PUBLIC_API_KEY, null);
     }
 
     public String getProfileImg() {
-        return sharedPreferences.getString(PROFILE_IMG, null);
+        return sharedPreferences.getString(SpotlightContract.UserEntry.KEY_PROFILE_IMG, null);
     }
 
-    public String getNick() {
-        return sharedPreferences.getString(NICK, null);
+    public String getBackgroundImg() {
+        return sharedPreferences.getString(SpotlightContract.UserEntry.KEY_BACKGROUND_IMG, null);
+    }
+
+    public String getUsername() {
+        return sharedPreferences.getString(SpotlightContract.UserEntry.KEY_USERNAME, null);
     }
 
     public String getFullName() {
-        return sharedPreferences.getString(FULL_NAME, null);
+        return sharedPreferences.getString(SpotlightContract.UserEntry.KEY_FULLNAME, null);
     }
 
     public String getEmail() {
-        return sharedPreferences.getString(EMAIL, null);
+        return sharedPreferences.getString(SpotlightContract.UserEntry.KEY_EMAIL, null);
     }
 
     public String getTypeAcc() {
-        return sharedPreferences.getString(TYPE_ACC, null);
+        return sharedPreferences.getString(SpotlightContract.UserEntry.KEY_TYPEACC, null);
     }
 
     public String getLastLogin() {
-        return sharedPreferences.getString(LAST_LOGIN, null);
+        return sharedPreferences.getString(SpotlightContract.UserEntry.KEY_LAST_LOGIN, null);
     }
 
-    public String getCreatedOn() {
-        return sharedPreferences.getString(CREATED_ON, null);
+    public String getCreatedAt() {
+        return sharedPreferences.getString(SpotlightContract.UserEntry.KEY_CREATED_AT, null);
     }
 
     private SharedPreferences.Editor getEditor(){

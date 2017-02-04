@@ -16,7 +16,7 @@ public class SpotPlace {
     private String mCategory;
     private String mDateTimeFrom;
     private String mDateTimeTo;
-    private List<String> mNpeople;
+    private List<String> mUsersIn;
 
 
     public String getmTitle() {
@@ -91,12 +91,12 @@ public class SpotPlace {
         this.mId = mId;
     }
 
-    public List<String> getmNpeople() {
-        return mNpeople;
+    public List<String> getmUsersIn() {
+        return mUsersIn;
     }
 
-    public void setmNpeople(List<String> mNpeople) {
-        this.mNpeople = mNpeople;
+    public void setmUsersIn(List<String> mUsersIn) {
+        this.mUsersIn = mUsersIn;
     }
 
     @Override
@@ -127,18 +127,18 @@ public class SpotPlace {
                 ", \"category\" : \"" + mCategory + "\"" +
                 ", \"datetime_from\" : \"" + mDateTimeFrom + "\"" +
                 ", \"datetime_to\" : \"" + mDateTimeTo + "\"" +
-                ", \"people_in\" : [" + getPeopleToString() + "]" +
+                ", \"users_in\" : [" + getPeopleToString() + "]" +
                 "}";
     }
 
     private String getPeopleToString() {
         String result = "";
 
-        for (int i = 0; i < mNpeople.size(); i++) {
-            if (i != (mNpeople.size() - 1)) {
-                result += ("\"" + mNpeople.get(i) + "\"" + ",");
+        for (int i = 0; i < mUsersIn.size(); i++) {
+            if (i != (mUsersIn.size() - 1)) {
+                result += ("\"" + mUsersIn.get(i) + "\"" + ",");
             } else {
-                result += ("\"" + mNpeople.get(i) + "\"");
+                result += ("\"" + mUsersIn.get(i) + "\"");
             }
         }
 
@@ -149,7 +149,7 @@ public class SpotPlace {
 
     }
 
-    public SpotPlace(String id, String creatorId, String title, String img, String address, String description, String category, String datetimeFrom, String datetimeTo, List<String> nPeople) {
+    public SpotPlace(String id, String creatorId, String title, String img, String address, String description, String category, String datetimeFrom, String datetimeTo, List<String> usersIn) {
 
         this.mId = id;
         this.mCreatorId = creatorId;
@@ -160,6 +160,6 @@ public class SpotPlace {
         this.mCategory = category;
         this.mDateTimeFrom = datetimeFrom;
         this.mDateTimeTo = datetimeTo;
-        this.mNpeople = nPeople;
+        this.mUsersIn = usersIn;
     }
 }

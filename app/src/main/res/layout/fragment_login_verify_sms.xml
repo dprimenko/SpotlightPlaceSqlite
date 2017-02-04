@@ -2,7 +2,7 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/rlVerifySmsCodeLogin"
+    android:id="@+id/rl_verify_sms_code_login"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -13,20 +13,21 @@
     android:focusableInTouchMode="true"
     android:background="@color/defaultBackgroundColor">
 
-    <android.support.v7.widget.CardView
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:contentPaddingLeft="@dimen/cw_horizontal_default_padding"
-        app:contentPaddingRight="@dimen/cw_horizontal_default_padding"
-        app:contentPaddingTop="@dimen/cw_vertical_default_padding"
-        app:contentPaddingBottom="@dimen/cw_vertical_default_padding">
+        android:paddingTop="@dimen/cw_vertical_default_padding"
+        android:paddingBottom="@dimen/cw_vertical_default_padding"
+        android:paddingLeft="@dimen/cw_vertical_default_padding"
+        android:paddingRight="@dimen/cw_vertical_default_padding"
+        android:background="@drawable/layout_rounded">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/txvInfoVerifySmsCodeLogin"
+                android:id="@+id/txv_inf_verify_sms_code_login"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/activity_vertical_margin"
@@ -35,33 +36,33 @@
                 android:textSize="16sp"/>
 
             <TextView
-                android:id="@+id/txvNumberVeryfySmsCodeLogin"
+                android:id="@+id/txv_number_veryfy_sms_code_login"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/activity_vertical_margin"
-                android:layout_below="@id/txvInfoVerifySmsCodeLogin"
+                android:layout_below="@id/txv_inf_verify_sms_code_login"
                 android:textColor="@color/colorAccent"
                 android:textSize="18sp" />
 
             <TextView
-                android:id="@+id/txvInputVerifySmsCodeLogin"
+                android:id="@+id/txv_input_verify_sms_code_login"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/activity_vertical_margin"
-                android:layout_below="@id/txvNumberVeryfySmsCodeLogin"
+                android:layout_below="@id/txv_number_veryfy_sms_code_login"
                 android:text="@string/txvInputVerifySmsCodeLogin"
                 android:textColor="@color/colorText"
                 android:textSize="16sp"/>
 
             <LinearLayout
-                android:id="@+id/llInputVerifySmsCodeLogin"
+                android:id="@+id/ll_input_verify_sms_code_login"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/activity_vertical_margin"
-                android:layout_below="@id/txvInputVerifySmsCodeLogin">
+                android:layout_below="@id/txv_input_verify_sms_code_login">
 
                 <EditText
-                    android:id="@+id/edtSecretCodeVerifySmsCodeLogin"
+                    android:id="@+id/edt_secret_code_verify_sms_code_login"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="9"
@@ -79,15 +80,15 @@
             </LinearLayout>
 
             <Button
-                android:id="@+id/btnOkVerifySmsCodeLogin"
+                android:id="@+id/btn_on_verify_sms_code_login"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/activity_horizontal_margin"
                 android:background="@color/colorAccent"
                 android:textColor="@color/white"
-                android:layout_below="@id/llInputVerifySmsCodeLogin"
+                android:layout_below="@id/ll_input_verify_sms_code_login"
                 android:text="@string/verify_code"
                 />
         </RelativeLayout>
-    </android.support.v7.widget.CardView>
+    </RelativeLayout>
 </RelativeLayout>

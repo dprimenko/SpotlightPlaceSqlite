@@ -27,6 +27,7 @@ import cz.msebera.android.httpclient.impl.client.DefaultHttpClient;
 import es.dpinfo.spotlightplace.models.SpotPlace;
 import es.dpinfo.spotlightplace.models.User;
 import es.dpinfo.spotlightplace.adapters.PlacesAdapter;
+import es.dpinfo.spotlightplace.schemas.SpotlightContract;
 
 /**
  * Created by dprimenko on 14/01/17.
@@ -34,19 +35,15 @@ import es.dpinfo.spotlightplace.adapters.PlacesAdapter;
 public class ApiDAO {
 
     private RequestQueue queue;
-    private static final String URL_PLACES = "https://api-spotlight-vipsr.c9users.io:8080/api/v1/events";
+    private static final String URL_PLACES = "https://api-spotlight-vipsr.c9users.io:8080/api/v1/places";
     private static final String URL_USERS = "https://api-spotlight-vipsr.c9users.io:8080/api/v1/users/";
     public static final String URL_USER_BYID = "https://api-spotlight-vipsr.c9users.io:8080/api/v1/user/id/";
     public static final String URL_USER_BYNUMBER = "https://api-spotlight-vipsr.c9users.io:8080/api/v1/user/numberphone/";
     private static final String URL_SETUP = "https://api-spotlight-vipsr.c9users.io:8080/api/v1/setup/";
     private static final String URL_ADDRESS_START = "http://maps.googleapis.com/maps/api/geocode/json?latlng=";
     private static final String URL_ADDRESS_END = "&sensor=true";
-    private JSONArray jsonArray;
-    private JSONArray jsonArrayUser;
-    private JSONObject jsonObject;
-    private AsyncApiRequestListener asyncApiRequestListener;
+    private AllPlacesApiRequestListener allPlacesApiRequestListener;
     private GmapsRequestStatus gmapsRequestStatus;
-    private UserApiRequestListener userApiRequestListener;
     private SetupUserListener setupUserListener;
     private UploadPlaceListener uploadPlaceListener;
     private UpdateUserApiRequestListener updateUserApiRequestListener;
@@ -57,39 +54,25 @@ public class ApiDAO {
         void onUploadPlaceError(String error);
     }
 
-    public interface AsyncApiRequestListener {
-        void onPreExecute();
-        void onDoInBackground(SpotPlace spotPlace);
-        void onPostExecute();
-    }
-
-    public interface PlacesApiRequestStatus {
-        void onResponseSuccess(JSONArray response);
-        void onErrorResponse(CharSequence messageError);
-    }
-
-    public interface UserApiRequestListener {
-        void onResponseSuccess(JSONArray response);
+    public interface AllPlacesApiRequestListener {
+        void onPreExecuteAllPlacesRequest();
+        void onDoInBackgroundAllPlacesRequest(SpotPlace spotPlace);
+        void onPostExecuteAllPlacesRequest();
     }
 
     public interface UpdateUserApiRequestListener {
-        void onResponseSuccess();
-        void onResponseError(String error);
+        void onUpdateUserResponseSuccess();
+        void onUpdateResponseError(String error);
     }
 
     public interface SetupUserListener {
-        void onSuccess(JSONObject jsonObject);
-        void onError(String error);
+        void onSetupUserSuccess(JSONObject jsonObject);
+        void onSetupUserError(String error);
     }
 
     public interface GmapsRequestStatus {
-        void onResponseSuccess(JSONObject response);
-        void onErrorResponse(CharSequence messageError);
-    }
-
-    public interface DownloadPlaces {
-        void onSuccessDownload();
-        void onErrorDownload(String messageError);
+        void onGmapsRequestResponseSuccess(JSONObject response);
+        void onGmapsRequestErrorResponse(CharSequence messageError);
     }
 
     private static ApiDAO ourInstance = new ApiDAO();
@@ -103,28 +86,28 @@ public class ApiDAO {
 
     public SpotPlace parseJsonPlace(Context context, String stringJson) {
 
-        JSONObject jsonObject = null;
+        JSONObject jsonObject;
         SpotPlace spotPlace = new SpotPlace();
 
         try {
             jsonObject = new JSONObject(stringJson);
-            spotPlace.setmId(jsonObject.getString("_id"));
-            spotPlace.setmCreatorId(jsonObject.getString("creator"));
-            spotPlace.setmTitle(jsonObject.getString("title"));
-            spotPlace.setmImg(jsonObject.getString("img"));
-            spotPlace.setmAddress(jsonObject.getString("address"));
-            spotPlace.setmDescription(jsonObject.getString("description"));
-            spotPlace.setmCategory(jsonObject.getString("category"));
-            spotPlace.setmDateTimeFrom(jsonObject.getString("datetime_from"));
-            spotPlace.setmDateTimeTo(jsonObject.getString("datetime_to"));
+            spotPlace.setmId(jsonObject.getString(SpotlightContract.PlaceEntry.KEY_ID));
+            spotPlace.setmCreatorId(jsonObject.getString(SpotlightContract.PlaceEntry.KEY_CREATOR));
+            spotPlace.setmTitle(jsonObject.getString(SpotlightContract.PlaceEntry.KEY_TITLE));
+            spotPlace.setmImg(jsonObject.getString(SpotlightContract.PlaceEntry.KEY_IMG));
+            spotPlace.setmAddress(jsonObject.getString(SpotlightContract.PlaceEntry.KEY_ADDRESS));
+            spotPlace.setmDescription(jsonObject.getString(SpotlightContract.PlaceEntry.KEY_DESCRIPTION));
+            spotPlace.setmCategory(jsonObject.getString(SpotlightContract.PlaceEntry.KEY_CATEGORY));
+            spotPlace.setmDateTimeFrom(jsonObject.getString(SpotlightContract.PlaceEntry.KEY_DATETIMEFROM));
+            spotPlace.setmDateTimeTo(jsonObject.getString(SpotlightContract.PlaceEntry.KEY_DATETIMETO));
 
-            JSONArray peopleArray = jsonObject.getJSONArray("people_in");
+            JSONArray peopleArray = jsonObject.getJSONArray(SpotlightContract.PlaceEntry.KEY_USERSIN);
             List<String> people = new ArrayList<>();
 
             for (int i = 0; i < peopleArray.length(); i++) {
                 people.add(peopleArray.getString(i));
             }
-            spotPlace.setmNpeople(people);
+            spotPlace.setmUsersIn(people);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -137,8 +120,6 @@ public class ApiDAO {
 
         queue = Volley.newRequestQueue(context);
 
-        jsonObject = null;
-
         String requestUrl = (URL_ADDRESS_START + address + URL_ADDRESS_END);
 
         JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, requestUrl, null,
@@ -146,14 +127,14 @@ public class ApiDAO {
                 {
                     @Override
                     public void onResponse(JSONObject response) {
-                        gmapsRequestStatus.onResponseSuccess(response);
+                        gmapsRequestStatus.onGmapsRequestResponseSuccess(response);
                     }
                 },
                 new Response.ErrorListener()
                 {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        gmapsRequestStatus.onErrorResponse(error.toString());
+                        gmapsRequestStatus.onGmapsRequestErrorResponse(error.toString());
                     }
                 }
         );
@@ -176,13 +157,13 @@ public class ApiDAO {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        setupUserListener.onSuccess(response);
+                        setupUserListener.onSetupUserSuccess(response);
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        setupUserListener.onError(error.toString());
+                        setupUserListener.onSetupUserError(error.toString());
                     }
                 });
 
@@ -207,13 +188,13 @@ public class ApiDAO {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        updateUserApiRequestListener.onResponseSuccess();
+                        updateUserApiRequestListener.onUpdateUserResponseSuccess();
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        updateUserApiRequestListener.onResponseError(error.toString());
+                        updateUserApiRequestListener.onUpdateResponseError(error.toString());
                     }
                 }
         );
@@ -263,7 +244,7 @@ public class ApiDAO {
     public void requestAllPlaces(Fragment fragment) {
 
         try {
-            asyncApiRequestListener = (AsyncApiRequestListener) fragment;
+            allPlacesApiRequestListener = (AllPlacesApiRequestListener) fragment;
         } catch (ClassCastException e) {
             throw new ClassCastException(fragment.toString() + " must implement AsyncApiRequestListener");
         }
@@ -317,7 +298,7 @@ public class ApiDAO {
 
         @Override
         protected void onPreExecute() {
-            asyncApiRequestListener.onPreExecute();
+            allPlacesApiRequestListener.onPreExecuteAllPlacesRequest();
         }
 
         @Override
@@ -342,7 +323,7 @@ public class ApiDAO {
                     if (endObj) {
                         endObj = false;
                         SpotPlace spotPlace = parseJsonPlace(contexts[0], jsonObj);
-                        asyncApiRequestListener.onDoInBackground(spotPlace);
+                        allPlacesApiRequestListener.onDoInBackgroundAllPlacesRequest(spotPlace);
                         jsonObj = new String();
                     } else {
                         if (s == 125) {
@@ -362,7 +343,7 @@ public class ApiDAO {
 
         @Override
         protected void onPostExecute(Boolean aBoolean) {
-            asyncApiRequestListener.onPostExecute();
+            allPlacesApiRequestListener.onPostExecuteAllPlacesRequest();
         }
     }
 }

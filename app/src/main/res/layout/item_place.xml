@@ -12,7 +12,7 @@
         android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/imvItemEventsList"
+            android:id="@+id/imv_item_places_list"
             android:layout_width="match_parent"
             android:layout_marginBottom="20dp"
             android:layout_height="180dp"
@@ -20,14 +20,14 @@
             />
 
         <RelativeLayout
-            android:id="@+id/rlDataItemEventsList"
+            android:id="@+id/rl_data_item_places_list"
             android:paddingLeft="10dp"
             android:layout_width="wrap_content"
             android:layout_height="80dp"
-            android:layout_below="@id/imvItemEventsList">
+            android:layout_below="@id/imv_item_places_list">
 
             <TextView
-                android:id="@+id/txvTitleItemEventsList"
+                android:id="@+id/txv_title_item_places_list"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="7dp"
@@ -36,10 +36,10 @@
                 />
 
             <TextView
-                android:id="@+id/txvDescriptionItemEventsList"
+                android:id="@+id/txv_description_item_places_list"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/txvTitleItemEventsList"
+                android:layout_below="@id/txv_title_item_places_list"
                 android:textSize="16sp"
                 android:textColor="@color/colorSecondaryText"
                 />
@@ -47,12 +47,12 @@
         </RelativeLayout>
 
         <LinearLayout
-            android:id="@+id/llActionButtonsEventsList"
+            android:id="@+id/ll_action_buttons_places_list"
             android:layout_width="match_parent"
             android:layout_height="80dp"
             android:layout_marginRight="10dp"
-            android:layout_below="@id/imvItemEventsList"
-            android:layout_toRightOf="@id/rlDataItemEventsList"
+            android:layout_below="@id/imv_item_places_list"
+            android:layout_toRightOf="@id/rl_data_item_places_list"
             android:layout_alignParentRight="true"
             android:gravity="right">
 
@@ -84,15 +84,15 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/llAddressItemEventsList"
+            android:id="@+id/ll_address_item_places_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:layout_below="@id/rlDataItemEventsList">
+            android:layout_below="@id/rl_data_item_places_list">
 
             <ImageView
-                android:id="@+id/imvAddressItemEventsList"
+                android:id="@+id/imv_icon_address_item_places_list"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="5dp"
@@ -100,7 +100,7 @@
                 android:src="@drawable/ic_map_marker"/>
 
             <TextView
-                android:id="@+id/txvAddressItemEventsList"
+                android:id="@+id/txv_address_item_places_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
@@ -109,25 +109,25 @@
         </LinearLayout>
 
         <View
-            android:id="@+id/dividerItemEventsList"
+            android:id="@+id/divider_item_places_list"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="@dimen/activity_vertical_margin"
             android:layout_marginBottom="@dimen/activity_vertical_margin"
             android:background="@color/colorDivider"
-            android:layout_below="@id/llAddressItemEventsList"/>
+            android:layout_below="@id/ll_address_item_places_list"/>
 
         <RelativeLayout
-            android:id="@+id/rlInfoItemEventsList"
+            android:id="@+id/rl_info_item_places_list"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginBottom="@dimen/activity_vertical_margin"
             android:layout_width="match_parent"
             android:layout_height="64dp"
-            android:layout_below="@id/dividerItemEventsList">
+            android:layout_below="@id/divider_item_places_list">
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/imvUserItemEventsList"
+                android:id="@+id/imv_user_item_places_list"
                 android:layout_width="64dp"
                 android:layout_height="64dp"
                 app:theme="@style/AppTheme"
@@ -135,30 +135,30 @@
                 app:civ_border_color="@color/colorDivider"
                 />
             <TextView
-                android:id="@+id/txvUserItemEventsList"
+                android:id="@+id/txv_user_item_places_list"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:textSize="18sp"
-                android:layout_toRightOf="@id/imvUserItemEventsList"
+                android:layout_toRightOf="@id/imv_user_item_places_list"
                 android:textColor="@color/colorText"
                 android:layout_centerInParent="true"/>
 
             <LinearLayout
-                android:id="@+id/llUsersItemEventsList"
+                android:id="@+id/ll_users_in_item_places_list"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingRight="20dp"
-                android:layout_alignParentBottom="true"
+                android:layout_centerVertical="true"
                 android:layout_alignParentRight="true">
                 <TextView
-                    android:id="@+id/txvPeopleEventsList"
+                    android:id="@+id/txv_users_in_item_places_list"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_gravity="center"
                     android:layout_height="wrap_content" />
                 <ImageView
-                    android:id="@+id/imvPeopleEventsList"
+                    android:id="@+id/imv_users_in_item_places_list"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"

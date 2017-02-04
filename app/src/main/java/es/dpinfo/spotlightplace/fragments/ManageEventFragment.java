@@ -8,20 +8,18 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -33,8 +31,11 @@ import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -77,8 +78,12 @@ public class ManageEventFragment extends Fragment implements TimePickerDialog.On
     private SimpleDateFormat formatterIn;
     private SimpleDateFormat formatterOut;
     private SimpleDateFormat formatterTime;
+    private SimpleDateFormat formatterFullTime;
 
     private boolean fromSelected;
+
+    private DateTimeZone timeZone;
+    private DateTimeFormatter formatterSelectedDatetime;
 
     private String dateSelectedFrom;
     private String dateSelectedTo;
@@ -148,6 +153,10 @@ public class ManageEventFragment extends Fragment implements TimePickerDialog.On
         formatterIn = new SimpleDateFormat("yyyy-MM-dd");
         formatterOut = new SimpleDateFormat("dd MMMM yyyy");
         formatterTime = new SimpleDateFormat("HH:mm");
+        formatterFullTime = new SimpleDateFormat("HH:mm");
+        //String.format("%s %s", formatterIn, formatterFullTime)
+        formatterSelectedDatetime = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm");
+        timeZone = DateTimeZone.getDefault();
 
         clManageEvent = (CoordinatorLayout) rootView.findViewById(R.id.cl_manage_event);
         toolbarManageEvent = (Toolbar) rootView.findViewById(R.id.toolbar_manage_event);
@@ -230,12 +239,6 @@ public class ManageEventFragment extends Fragment implements TimePickerDialog.On
             }
         });
 
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mCallback.onMainFragment();
-            }
-        });
 
         edtAddress.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -271,6 +274,15 @@ public class ManageEventFragment extends Fragment implements TimePickerDialog.On
         super.onOptionsItemSelected(item);
 
         if (item.getItemId() == R.id.action_manage_event)  {
+
+            DateTime dateTimeFrom = formatterSelectedDatetime.parseDateTime(String.format("%s %s", dateSelectedFrom, timeSelectedFrom));
+            String iso8601 = dateTimeFrom.toString();
+            DateTime finalDateTimeFrom = new DateTime(iso8601, timeZone);
+
+            DateTime dateTimeTo = formatterSelectedDatetime.parseDateTime(String.format("%s %s", dateSelectedTo, timeSelectedTo));
+            iso8601 = dateTimeTo.toString();
+            DateTime finalDateTimeTo = new DateTime(iso8601, timeZone);
+
             SpotPlace place = new SpotPlace();
 
             place.setmCreatorId(AccountPreferences.getInstance(getActivity()).getId());
@@ -279,13 +291,14 @@ public class ManageEventFragment extends Fragment implements TimePickerDialog.On
             place.setmAddress(selectedMapMark);
             place.setmDescription(edtDescription.getText().toString());
             place.setmCategory(categoriesSpinner.getSelectedItem().toString());
-            place.setmDateTimeFrom(String.format("%s %s", dateSelectedFrom, timeSelectedFrom));
-            place.setmDateTimeTo(String.format("%s %s", dateSelectedTo, timeSelectedTo));
-            place.setmNpeople(new ArrayList<String>());
+            place.setmDateTimeFrom(finalDateTimeFrom.toString());
+            place.setmDateTimeTo(finalDateTimeTo.toString());
+            place.setmUsersIn(new ArrayList<String>());
 
             presenter.uploadPlace(this, place);
             pd = new ProgressDialog(getActivity());
             pd.setMessage(getResources().getString(R.string.upload_message));
+            pd.show();
         } else if(item.getItemId() == android.R.id.home) {
             mCallback.onMainFragment();
         }
@@ -324,15 +337,17 @@ public class ManageEventFragment extends Fragment implements TimePickerDialog.On
 
     @Override
     public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute, int second) {
-        Date datetime = null;
+        Date time = null;
+        Date timeCompact = null;
         try {
-            datetime = formatterTime.parse(String.valueOf(hourOfDay) + ":" + String.valueOf(minute));
+            time = formatterTime.parse(String.valueOf(hourOfDay) + ":" + String.valueOf(minute) + ":" + String.valueOf(second));
+            timeCompact = formatterTime.parse(String.valueOf(hourOfDay) + ":" + String.valueOf(minute));
             if (fromSelected) {
-                txvTimeFrom.setText(formatterTime.format(datetime));
-                timeSelectedFrom = formatterTime.format(datetime);
+                txvTimeFrom.setText(formatterTime.format(timeCompact));
+                timeSelectedFrom = formatterTime.format(timeCompact);
             } else {
-                txvTimeTo.setText(formatterTime.format(datetime));
-                timeSelectedTo = formatterTime.format(datetime);
+                txvTimeTo.setText(formatterTime.format(timeCompact));
+                timeSelectedTo = formatterTime.format(timeCompact);
             }
         } catch (ParseException e) {
             e.printStackTrace();
@@ -363,6 +378,7 @@ public class ManageEventFragment extends Fragment implements TimePickerDialog.On
 
     @Override
     public void onUploadPlaceError(String error) {
+        Log.d("ErrorUpload", error);
         pd.dismiss();
     }
 

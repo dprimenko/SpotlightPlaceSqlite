@@ -8,18 +8,21 @@ import java.util.List;
  */
 public class User {
 
+    public static final String NUMBER_PHONE_STR = "number_phone";
+
     private String mId;
     private String mNumberPhone;
     private String mProfileImg;
-    private String mNick;
+    private String mBackgoundImg;
+    private String mUsername;
     private String mFullName;
     private String mEmail;
     private String mTypeAcc;
-    private String mApiKey;
+    private String mPublicApiKey;
     private List<String> mFollowers;
     private List<String> mFollowing;
     private String mLastLogin;
-    private String mCreated;
+    private String mCreatedAt;
 
     public String getmId() {
         return mId;
@@ -45,12 +48,20 @@ public class User {
         this.mProfileImg = mProfileImg;
     }
 
-    public String getmNick() {
-        return mNick;
+    public String getmBackgoundImg() {
+        return mBackgoundImg;
     }
 
-    public void setmNick(String mNick) {
-        this.mNick = mNick;
+    public void setmBackgoundImg(String mBackgoundImg) {
+        this.mBackgoundImg = mBackgoundImg;
+    }
+
+    public String getmUsername() {
+        return mUsername;
+    }
+
+    public void setmUsername(String mUsername) {
+        this.mUsername = mUsername;
     }
 
     public String getmFullName() {
@@ -77,12 +88,12 @@ public class User {
         this.mTypeAcc = mTypeAcc;
     }
 
-    public String getmApiKey() {
-        return mApiKey;
+    public String getmPublicApiKey() {
+        return mPublicApiKey;
     }
 
-    public void setmApiKey(String mApiKey) {
-        this.mApiKey = mApiKey;
+    public void setmPublicApiKey(String mPublicApiKey) {
+        this.mPublicApiKey = mPublicApiKey;
     }
 
     public List<String> getmFollowers() {
@@ -109,42 +120,44 @@ public class User {
         this.mLastLogin = mLastLogin;
     }
 
-    public String getmCreated() {
-        return mCreated;
+    public String getmCreatedAt() {
+        return mCreatedAt;
     }
 
-    public void setmCreated(String mCreated) {
-        this.mCreated = mCreated;
+    public void setmCreatedAt(String mCreatedAt) {
+        this.mCreatedAt = mCreatedAt;
     }
 
     public User() {
         this.mId = "";
         this.mNumberPhone = "";
         this.mProfileImg = "https://developers.google.com/experts/img/user/user-default.png";
-        this.mNick = "";
+        this.mBackgoundImg = "http://the8guild.com/themes/html/appica2/android/img/intro/intro-bg.png";
+        this.mUsername = "";
         this.mFullName = "";
         this.mEmail = "";
-        this.mTypeAcc = "Normal";
-        this.mApiKey = "";
+        this.mTypeAcc = "normal";
+        this.mPublicApiKey = "";
         this.mFollowers = new ArrayList<>();
         this.mFollowing = new ArrayList<>();
         this.mLastLogin = "";
-        this.mCreated = "";
+        this.mCreatedAt = "";
     }
 
-    public User(String mId, String mCountryCode, String mNumberPhone, String mProfileImg, String mNick, String mFullName, String mEmail, String mTypeAcc, String mApiKey, List<String> mFollowers, List<String> mFollowing, String mLastLogin, String mCreated) {
+    public User(String mId, String mNumberPhone, String mProfileImg, String mBackgoundImg,String mUsername, String mFullName, String mEmail, String mTypeAcc, String mPublicApiKey, List<String> mFollowers, List<String> mFollowing, String mLastLogin, String mCreatedAt) {
         this.mId = mId;
         this.mNumberPhone = mNumberPhone;
         this.mProfileImg = mProfileImg;
-        this.mNick = mNick;
+        this.mBackgoundImg = mBackgoundImg;
+        this.mUsername = mUsername;
         this.mFullName = mFullName;
         this.mEmail = mEmail;
         this.mTypeAcc = mTypeAcc;
-        this.mApiKey = mApiKey;
+        this.mPublicApiKey = mPublicApiKey;
         this.mFollowers = mFollowers;
         this.mFollowing = mFollowing;
         this.mLastLogin = mLastLogin;
-        this.mCreated = mCreated;
+        this.mCreatedAt = mCreatedAt;
     }
 
     @Override
@@ -152,13 +165,14 @@ public class User {
         return "{" +
                 "\"number_phone\" : \"" + mNumberPhone + '"' +
                 ", \"profile_img\" : \"" + mProfileImg + '"' +
-                ", \"nick\" : \"" + mNick + '"' +
+                ", \"background_img\" : \"" + mBackgoundImg + '"' +
+                ", \"username\" : \"" + mUsername + '"' +
                 ", \"full_name\" : \"" + mFullName + '"' +
                 ", \"email\" : \"" + mEmail + '"' +
                 ", \"type_acc\" : \"" + mTypeAcc + '"' +
-                ", \"sp_api_key_id\" : \"" + mApiKey + '"' +
+                ", \"sp_api_key_id\" : \"" + mPublicApiKey + '"' +
                 ", \"last_login\" : \"" + mLastLogin + '"' +
-                ", \"created\" : \"" + mCreated + '"' +
+                ", \"created\" : \"" + mCreatedAt + '"' +
                 ", \"followers\" : [" + followersToString() + "]" +
                 ", \"following\" : [" + followingToString() + "]" +
                 "}";
@@ -171,7 +185,7 @@ public class User {
         if (o instanceof  User) {
             User user = (User) o;
 
-            if (user.getmId() == this.getmId()) {
+            if (user.getmId().equals(this.getmId())) {
                 result = true;
             }
         }

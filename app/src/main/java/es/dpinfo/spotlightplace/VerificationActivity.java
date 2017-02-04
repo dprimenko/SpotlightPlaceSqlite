@@ -23,13 +23,13 @@ import es.dpinfo.spotlightplace.interfaces.ISetupMvp;
 import es.dpinfo.spotlightplace.models.User;
 import es.dpinfo.spotlightplace.presenters.SetupPresenter;
 import es.dpinfo.spotlightplace.repository.ApiDAO;
+import es.dpinfo.spotlightplace.schemas.SpotlightContract;
 
 /**
  * Created by dprimenko on 3/01/17.
  */
 public class VerificationActivity extends AppCompatActivity implements AskNumberFragment.AskNumberFragmentListener, VerifyNumFragment.VerifyNumFragmentListener, ApiDAO.SetupUserListener, ISetupMvp.View {
 
-    private FrameLayout flVerification;
     private AskNumberFragment askNumberFragment;
     private VerifyNumFragment verifyNumFragment;
     private FragmentTransaction ft;
@@ -79,17 +79,17 @@ public class VerificationActivity extends AppCompatActivity implements AskNumber
     public void onCodeVerified(Bundle bundle) {
 
         User user = new User();
-        user.setmNumberPhone(bundle.getString("numberPhone"));
+        user.setmNumberPhone(bundle.getString(SpotlightContract.UserEntry.KEY_NUMBER_PHONE));
         presenter.checkAccountPreferences(this, user);
     }
 
     @Override
-    public void onSuccess(JSONObject response) {
+    public void onSetupUserSuccess(JSONObject response) {
         presenter.saveAccountPreferences(this, response);
     }
 
     @Override
-    public void onError(String error) {
+    public void onSetupUserError(String error) {
         Log.d("Error", error.toString());
         finish();
     }
@@ -103,6 +103,13 @@ public class VerificationActivity extends AppCompatActivity implements AskNumber
     }
 
     @Override
+    public void loadAskNumberFragment() {
+        setContentView(R.layout.activity_verification);
+        askNumberFragment = AskNumberFragment.newInstance();
+        getSupportFragmentManager().beginTransaction().add(R.id.fl_verification, askNumberFragment).commit();
+    }
+
+    @Override
     public void closeApp() {
         finish();
     }
@@ -111,8 +118,5 @@ public class VerificationActivity extends AppCompatActivity implements AskNumber
         presenter = new SetupPresenter(this);
         presenter.checkAccountPreferences(this);
 
-        setContentView(R.layout.activity_verification);
-        askNumberFragment = AskNumberFragment.newInstance();
-        getSupportFragmentManager().beginTransaction().add(R.id.fl_verification, askNumberFragment).commit();
     }
 }

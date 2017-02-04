@@ -26,7 +26,7 @@ public class EditProfilePresenter implements IEditProfileMvp.Presenter {
             view.setMessageError(R.string.userDataEmpty);
         } else {
             preferences.putFullName(fullName);
-            preferences.putNick(nick);
+            preferences.putUsername(nick);
             preferences.putEmail(email);
 
             User user = new User();
@@ -34,12 +34,12 @@ public class EditProfilePresenter implements IEditProfileMvp.Presenter {
             user.setmId(preferences.getId());
             user.setmNumberPhone(preferences.getNumberPhone());
             user.setmProfileImg(preferences.getProfileImg());
-            user.setmNick(preferences.getNick());
+            user.setmUsername(preferences.getUsername());
             user.setmFullName(preferences.getFullName());
             user.setmEmail(preferences.getEmail());
             user.setmTypeAcc(preferences.getTypeAcc());
             user.setmLastLogin(preferences.getLastLogin());
-            user.setmCreated(preferences.getCreatedOn());
+            user.setmCreatedAt(preferences.getCreatedAt());
 
             ApiDAO.getInstance().updateUser(fragment, user);
         }

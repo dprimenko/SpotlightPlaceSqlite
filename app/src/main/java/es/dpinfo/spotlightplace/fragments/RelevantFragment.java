@@ -1,6 +1,5 @@
 package es.dpinfo.spotlightplace.fragments;
 
-import android.accounts.Account;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -10,14 +9,9 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -32,13 +26,6 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
 import de.hdodenhof.circleimageview.CircleImageView;
 import es.dpinfo.spotlightplace.MainActivity;
 import es.dpinfo.spotlightplace.R;
@@ -52,7 +39,7 @@ import es.dpinfo.spotlightplace.repository.ApiDAO;
 /**
  * Created by dprimenko on 3/01/17.
  */
-public class MainFragment extends Fragment implements IPlaceListMvp.View, ApiDAO.AsyncApiRequestListener{
+public class RelevantFragment extends Fragment implements IPlaceListMvp.View, ApiDAO.AllPlacesApiRequestListener{
 
 
     private CoordinatorLayout clMainFragment;
@@ -80,8 +67,8 @@ public class MainFragment extends Fragment implements IPlaceListMvp.View, ApiDAO
         void onProfileFragment();
     }
 
-    public static MainFragment newInstance(Bundle bundle) {
-        MainFragment fragment = new MainFragment();
+    public static RelevantFragment newInstance(Bundle bundle) {
+        RelevantFragment fragment = new RelevantFragment();
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -106,7 +93,7 @@ public class MainFragment extends Fragment implements IPlaceListMvp.View, ApiDAO
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_main, container, false);
+        return inflater.inflate(R.layout.fragment_relevant, container, false);
     }
 
     @Override
@@ -118,7 +105,7 @@ public class MainFragment extends Fragment implements IPlaceListMvp.View, ApiDAO
         presenter = new PlacesListPresenter(this);
 
         clMainFragment = (CoordinatorLayout) rootView.findViewById(R.id.cl_main_fragment);
-        fabAddEvent = (FloatingActionButton) rootView.findViewById(R.id.fabAddEvent);
+        fabAddEvent = (FloatingActionButton) rootView.findViewById(R.id.fab_add_place);
 
         swipe = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_list_places);
 
@@ -137,18 +124,17 @@ public class MainFragment extends Fragment implements IPlaceListMvp.View, ApiDAO
             @Override
             public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
                 BitmapDrawable drawable = new BitmapDrawable(getActivity().getResources(), bitmap);
-
                 llNavigation.setBackground(drawable);
             }
 
             @Override
             public void onBitmapFailed(Drawable errorDrawable) {
-                Log.d("Background navigation", "doesnt exists");
+                llNavigation.setBackground(errorDrawable);
             }
 
             @Override
             public void onPrepareLoad(Drawable placeHolderDrawable) {
-                llNavigation.setBackground(getResources().getDrawable(R.drawable.placeholder));
+                llNavigation.setBackground(placeHolderDrawable);
             }
         };
         loadContent(rootView);
@@ -159,6 +145,8 @@ public class MainFragment extends Fragment implements IPlaceListMvp.View, ApiDAO
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_main, menu);
+        ((MainActivity)getActivity()).toolbarMain.setVisibility(View.VISIBLE);
+        Log.d("MenuMain", "Hola");
     }
 
     @Override
@@ -191,17 +179,17 @@ public class MainFragment extends Fragment implements IPlaceListMvp.View, ApiDAO
     }
 
     @Override
-    public void onPreExecute() {
+    public void onPreExecuteAllPlacesRequest() {
         swipe.setRefreshing(true);
     }
 
     @Override
-    public void onDoInBackground(SpotPlace spotPlace) {
+    public void onDoInBackgroundAllPlacesRequest(SpotPlace spotPlace) {
         addPlace(spotPlace);
     }
 
     @Override
-    public void onPostExecute() {
+    public void onPostExecuteAllPlacesRequest() {
         swipe.setRefreshing(false);
     }
 
@@ -225,11 +213,13 @@ public class MainFragment extends Fragment implements IPlaceListMvp.View, ApiDAO
 
     private void loadInfoNavigation() {
 
-        txvFullNameNavigation.setText(AccountPreferences.getInstance(getActivity()).getFullName());
-        txvEmailNavigation.setText(AccountPreferences.getInstance(getActivity()).getEmail());
+        AccountPreferences accPreferences = AccountPreferences.getInstance(getActivity());
 
-        Picasso.with(getActivity()).load(AccountPreferences.getInstance(getActivity()).getProfileImg()).into(imvNavigationProfile);
-        Picasso.with(getActivity()).load("https://wallpapers.wallhaven.cc/wallpapers/full/wallhaven-163604.jpg").into(targetBackground);
+        txvFullNameNavigation.setText(accPreferences.getFullName());
+        txvEmailNavigation.setText(accPreferences.getEmail());
+
+        Picasso.with(getActivity()).load(accPreferences.getProfileImg()).into(imvNavigationProfile);
+        Picasso.with(getActivity()).load(accPreferences.getBackgroundImg()).placeholder(R.drawable.placeholder).error(R.drawable.placeholder).into(targetBackground);
     }
 
     private void loadContent(View view) {
@@ -249,7 +239,7 @@ public class MainFragment extends Fragment implements IPlaceListMvp.View, ApiDAO
                 adapter = new PlacesAdapter(getActivity(), R.layout.item_place);
                 lwPlaces.setAdapter(adapter);
 
-                presenter.requestPlaces(MainFragment.this);
+                presenter.requestPlaces(RelevantFragment.this);
             }
         });
 
@@ -260,7 +250,7 @@ public class MainFragment extends Fragment implements IPlaceListMvp.View, ApiDAO
                 adapter = new PlacesAdapter(getActivity(), R.layout.item_place);
                 lwPlaces.setAdapter(adapter);
 
-                presenter.requestPlaces(MainFragment.this);
+                presenter.requestPlaces(RelevantFragment.this);
             }
         });
     }

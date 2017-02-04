@@ -8,17 +8,17 @@
     >
 
     <ImageView
-        android:id="@+id/imvSocialAbout"
+        android:id="@+id/imv_social_about"
         android:layout_width="36dp"
         android:layout_height="36dp"
         android:layout_marginRight="10dp"
         />
 
     <TextView
-        android:id="@+id/txvSocialAbout"
+        android:id="@+id/txv_social_about"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/imvSocialAbout"
+        android:layout_toRightOf="@id/imv_social_about"
         android:layout_centerInParent="true"
         android:textSize="18sp"
         android:textColor="@color/colorText"/>

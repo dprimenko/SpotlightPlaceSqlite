@@ -31,5 +31,5 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:textColor="@android:color/white"
-        style="@style/Base.Widget.AppCompat.Spinner"/>
+        />
 </LinearLayout>

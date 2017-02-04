@@ -42,4 +42,7 @@
     <string name="navigation_in_progress">En curso</string>
     <string name="navigation_scheduled">Programados</string>
     <string name="navigation_profile">Perfil</string>
+    <string name="complete_name">Nombre completo</string>
+    <string name="user">Usuario</string>
+    <string name="email">Email</string>
 </resources>
