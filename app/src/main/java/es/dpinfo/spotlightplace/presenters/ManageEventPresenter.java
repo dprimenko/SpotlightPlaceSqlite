@@ -1,9 +1,16 @@
 package es.dpinfo.spotlightplace.presenters;
 
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 
+import com.google.android.gms.location.places.Place;
+
+import org.w3c.dom.Text;
+
+import es.dpinfo.spotlightplace.R;
 import es.dpinfo.spotlightplace.interfaces.IManageEventMvp;
 import es.dpinfo.spotlightplace.models.SpotPlace;
+import es.dpinfo.spotlightplace.models.User;
 import es.dpinfo.spotlightplace.repository.ApiDAO;
 
 /**
@@ -15,6 +22,20 @@ public class ManageEventPresenter implements IManageEventMvp.Presenter {
 
     public ManageEventPresenter(IManageEventMvp.View view) {
         this.view = view;
+    }
+
+    @Override
+    public boolean validateFields(SpotPlace place) {
+
+        boolean result = false;
+
+        if (TextUtils.isEmpty(place.getmTitle()) || TextUtils.isEmpty(place.getmAddress())) {
+            view.setMessageError(R.string.data_empty);
+        } else {
+            result = true;
+        }
+
+        return result;
     }
 
     @Override

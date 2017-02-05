@@ -10,6 +10,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.menu.MenuBuilder;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -127,11 +128,6 @@ public class ManageEventFragment extends Fragment implements TimePickerDialog.On
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_manage_event, menu);
-    }
-
-    @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
@@ -217,10 +213,7 @@ public class ManageEventFragment extends Fragment implements TimePickerDialog.On
         datePickerFrom.setMinDate(now);
         datePickerTo.setMinDate(now);
 
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbarManageEvent);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("");
-
+        loadMenuManageEvent();
 
         categoriesSpinner.setAdapter(new ArrayAdapter(getActivity(),R.layout.support_simple_spinner_dropdown_item, getResources().getStringArray(R.array.array_categories)));
         categoriesSpinner.setSelection(3);
@@ -258,6 +251,8 @@ public class ManageEventFragment extends Fragment implements TimePickerDialog.On
         });
     }
 
+
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 1) {
@@ -267,42 +262,6 @@ public class ManageEventFragment extends Fragment implements TimePickerDialog.On
                 edtAddress.setText(place.getAddress());
             }
         }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        super.onOptionsItemSelected(item);
-
-        if (item.getItemId() == R.id.action_manage_event)  {
-
-            DateTime dateTimeFrom = formatterSelectedDatetime.parseDateTime(String.format("%s %s", dateSelectedFrom, timeSelectedFrom));
-            String iso8601 = dateTimeFrom.toString();
-            DateTime finalDateTimeFrom = new DateTime(iso8601, timeZone);
-
-            DateTime dateTimeTo = formatterSelectedDatetime.parseDateTime(String.format("%s %s", dateSelectedTo, timeSelectedTo));
-            iso8601 = dateTimeTo.toString();
-            DateTime finalDateTimeTo = new DateTime(iso8601, timeZone);
-
-            SpotPlace place = new SpotPlace();
-
-            place.setmCreatorId(AccountPreferences.getInstance(getActivity()).getId());
-            place.setmTitle(edtTitle.getText().toString());
-            place.setmImg("http://xpenology.org/wp-content/themes/qaengine/img/default-thumbnail.jpg");
-            place.setmAddress(selectedMapMark);
-            place.setmDescription(edtDescription.getText().toString());
-            place.setmCategory(categoriesSpinner.getSelectedItem().toString());
-            place.setmDateTimeFrom(finalDateTimeFrom.toString());
-            place.setmDateTimeTo(finalDateTimeTo.toString());
-            place.setmUsersIn(new ArrayList<String>());
-
-            presenter.uploadPlace(this, place);
-            pd = new ProgressDialog(getActivity());
-            pd.setMessage(getResources().getString(R.string.upload_message));
-            pd.show();
-        } else if(item.getItemId() == android.R.id.home) {
-            mCallback.onMainFragment();
-        }
-        return true;
     }
 
     @Override
@@ -383,7 +342,57 @@ public class ManageEventFragment extends Fragment implements TimePickerDialog.On
     }
 
     @Override
-    public void setMessageError(String messageError) {
-        Snackbar.make(clManageEvent, messageError, Snackbar.LENGTH_LONG).show();
+    public void setMessageError(int messageError) {
+        Snackbar.make(clManageEvent, getString(messageError), Snackbar.LENGTH_LONG).show();
+    }
+
+    private void loadMenuManageEvent() {
+        toolbarManageEvent.inflateMenu(R.menu.menu_manage_event);
+        toolbarManageEvent.setNavigationIcon(R.drawable.arrow_left);
+        toolbarManageEvent.setTitle("");
+
+        toolbarManageEvent.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+
+                if (item.getItemId() == R.id.action_manage_event)  {
+                    DateTime dateTimeFrom = formatterSelectedDatetime.parseDateTime(String.format("%s %s", dateSelectedFrom, timeSelectedFrom));
+                    String iso8601 = dateTimeFrom.toString();
+                    DateTime finalDateTimeFrom = new DateTime(iso8601, timeZone);
+
+                    DateTime dateTimeTo = formatterSelectedDatetime.parseDateTime(String.format("%s %s", dateSelectedTo, timeSelectedTo));
+                    iso8601 = dateTimeTo.toString();
+                    DateTime finalDateTimeTo = new DateTime(iso8601, timeZone);
+
+                    SpotPlace place = new SpotPlace();
+
+                    place.setmCreatorId(AccountPreferences.getInstance(getActivity()).getId());
+                    place.setmTitle(edtTitle.getText().toString());
+                    place.setmImg("http://xpenology.org/wp-content/themes/qaengine/img/default-thumbnail.jpg");
+                    place.setmAddress(selectedMapMark);
+                    place.setmDescription(edtDescription.getText().toString());
+                    place.setmCategory(categoriesSpinner.getSelectedItem().toString());
+                    place.setmDateTimeFrom(finalDateTimeFrom.toString());
+                    place.setmDateTimeTo(finalDateTimeTo.toString());
+                    place.setmUsersIn(new ArrayList<String>());
+
+
+                    if (presenter.validateFields(place)) {
+                        presenter.uploadPlace(ManageEventFragment.this, place);
+                        pd = new ProgressDialog(getActivity());
+                        pd.setMessage(getResources().getString(R.string.upload_message));
+                        pd.show();
+                    }
+                }
+                return true;
+            }
+        });
+
+        toolbarManageEvent.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCallback.onMainFragment();
+            }
+        });
     }
 }
