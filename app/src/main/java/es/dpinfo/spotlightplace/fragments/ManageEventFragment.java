@@ -36,6 +36,7 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.format.ISODateTimeFormat;
 import org.json.JSONObject;
 
 import java.text.ParseException;
@@ -95,7 +96,7 @@ public class ManageEventFragment extends Fragment implements TimePickerDialog.On
     private EditText edtTitle, edtAddress, edtDescription;
     private String selectedMapMark;
 
-    ProgressDialog pd;
+    private ProgressDialog pd;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -356,6 +357,7 @@ public class ManageEventFragment extends Fragment implements TimePickerDialog.On
             public boolean onMenuItemClick(MenuItem item) {
 
                 if (item.getItemId() == R.id.action_manage_event)  {
+
                     DateTime dateTimeFrom = formatterSelectedDatetime.parseDateTime(String.format("%s %s", dateSelectedFrom, timeSelectedFrom));
                     String iso8601 = dateTimeFrom.toString();
                     DateTime finalDateTimeFrom = new DateTime(iso8601, timeZone);

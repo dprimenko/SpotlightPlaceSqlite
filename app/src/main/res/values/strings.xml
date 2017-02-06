@@ -45,4 +45,5 @@
     <string name="complete_name">Nombre completo</string>
     <string name="user">Usuario</string>
     <string name="email">Email</string>
+    <string name="connection_error">Hubo un error de conexión. Intentelo más tarde.</string>
 </resources>

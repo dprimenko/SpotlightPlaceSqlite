@@ -146,7 +146,6 @@ public class RelevantFragment extends Fragment implements IPlaceListMvp.View, Ap
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_main, menu);
         ((MainActivity)getActivity()).toolbarMain.setVisibility(View.VISIBLE);
-        Log.d("MenuMain", "Hola");
     }
 
     @Override

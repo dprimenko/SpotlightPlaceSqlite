@@ -65,4 +65,6 @@
     <string name="navigation_in_progress">In progress</string>
     <string name="navigation_scheduled">Scheduled</string>
     <string name="navigation_profile">Profile</string>
+
+    <string name="connection_error">Trouble with connection. Try again later.</string>
 </resources>

@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
@@ -18,6 +19,8 @@ import android.widget.Toast;
 import org.json.JSONObject;
 
 import es.dpinfo.spotlightplace.fragments.AskNumberFragment;
+import es.dpinfo.spotlightplace.fragments.EditProfileFragment;
+import es.dpinfo.spotlightplace.fragments.LoadingFragment;
 import es.dpinfo.spotlightplace.fragments.VerifyNumFragment;
 import es.dpinfo.spotlightplace.interfaces.ISetupMvp;
 import es.dpinfo.spotlightplace.models.User;
@@ -30,8 +33,10 @@ import es.dpinfo.spotlightplace.schemas.SpotlightContract;
  */
 public class VerificationActivity extends AppCompatActivity implements AskNumberFragment.AskNumberFragmentListener, VerifyNumFragment.VerifyNumFragmentListener, ApiDAO.SetupUserListener, ISetupMvp.View {
 
+    private FrameLayout flVerification;
     private AskNumberFragment askNumberFragment;
     private VerifyNumFragment verifyNumFragment;
+    private LoadingFragment loadingFragment;
     private FragmentTransaction ft;
     private SetupPresenter presenter;
     final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
@@ -54,6 +59,12 @@ public class VerificationActivity extends AppCompatActivity implements AskNumber
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_verification);
+
+        flVerification = (FrameLayout) findViewById(R.id.fl_verification);
+
+        loadingFragment = LoadingFragment.newInstance();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fl_verification, loadingFragment).commit();
 
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED) {
@@ -77,7 +88,6 @@ public class VerificationActivity extends AppCompatActivity implements AskNumber
 
     @Override
     public void onCodeVerified(Bundle bundle) {
-
         User user = new User();
         user.setmNumberPhone(bundle.getString(SpotlightContract.UserEntry.KEY_NUMBER_PHONE));
         presenter.checkAccountPreferences(this, user);
@@ -90,8 +100,8 @@ public class VerificationActivity extends AppCompatActivity implements AskNumber
 
     @Override
     public void onSetupUserError(String error) {
-        Log.d("Error", error.toString());
-        finish();
+        Log.d("OnSetupError", error.toString());
+        closeApp();
     }
 
 
@@ -107,6 +117,11 @@ public class VerificationActivity extends AppCompatActivity implements AskNumber
         setContentView(R.layout.activity_verification);
         askNumberFragment = AskNumberFragment.newInstance();
         getSupportFragmentManager().beginTransaction().add(R.id.fl_verification, askNumberFragment).commit();
+    }
+
+    @Override
+    public void setMessageError(int messageError) {
+        Snackbar.make(flVerification, getString(messageError), Snackbar.LENGTH_LONG).show();
     }
 
     @Override

@@ -14,6 +14,7 @@ public interface ISetupMvp {
     interface View {
         void startMainActivity();
         void loadAskNumberFragment();
+        void setMessageError(int messageError);
         void closeApp();
     }
     interface Presenter {

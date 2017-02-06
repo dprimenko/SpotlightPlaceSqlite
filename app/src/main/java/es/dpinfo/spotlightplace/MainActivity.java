@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import es.dpinfo.spotlightplace.fragments.AboutFragment;
 import es.dpinfo.spotlightplace.fragments.EditProfileFragment;
 import es.dpinfo.spotlightplace.fragments.RelevantFragment;
 import es.dpinfo.spotlightplace.fragments.ManageEventFragment;
@@ -29,6 +30,7 @@ public class MainActivity extends AppCompatActivity implements RelevantFragment.
     private ManageEventFragment manageEventFragment;
     private ProfileFragment profileFragment;
     private EditProfileFragment editProfileFragment;
+    private AboutFragment aboutFragment;
     private FragmentTransaction ft;
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
@@ -107,13 +109,21 @@ public class MainActivity extends AppCompatActivity implements RelevantFragment.
         ft.commit();
     }
 
+    public void onAboutFragment() {
+        aboutFragment = AboutFragment.newInstance();
+
+        ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.fl_main, aboutFragment);
+        ft.addToBackStack("ABOUT");
+        ft.commit();
+    }
+
     public void setupDrawerContent() {
         drawerLayout.openDrawer(GravityCompat.START);
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
-                item.setChecked(true);
 
                 switch (item.getItemId()) {
                     case R.id.action_profile_main:
@@ -124,6 +134,9 @@ public class MainActivity extends AppCompatActivity implements RelevantFragment.
                     case R.id.action_inprogress:
                         break;
                     case R.id.action_scheduled:
+                        break;
+                    case R.id.action_about_main:
+                        onAboutFragment();
                         break;
                 }
 

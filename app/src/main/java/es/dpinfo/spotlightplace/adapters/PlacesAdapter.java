@@ -20,6 +20,9 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.squareup.picasso.Picasso;
 
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.format.ISODateTimeFormat;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -87,12 +90,11 @@ public class PlacesAdapter extends ArrayAdapter<SpotPlace> implements ApiDAO.Gma
             holder = (PlaceHolder) view.getTag();
         }
 
-        holder.fabLocation.setVisibility(View.VISIBLE);
         holder.fabViewMore.setVisibility(View.VISIBLE);
 
-        /*if (checkDateTime(item.getmDateTimeFrom(), item.getmDateTimeTo())) {
-
-        }*/
+        if (checkDateTime(item.getmDateTimeFrom(), item.getmDateTimeTo())) {
+            holder.fabLocation.setVisibility(View.VISIBLE);
+        }
 
         getUserData(position);
         Picasso.with(getContext())
@@ -133,19 +135,14 @@ public class PlacesAdapter extends ArrayAdapter<SpotPlace> implements ApiDAO.Gma
     public boolean checkDateTime(String from, String to) {
         boolean result = false;
 
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        Date dateFrom = null;
-        Date dateTo = null;
-        Calendar now = Calendar.getInstance();
-        try {
-            dateFrom = formatter.parse(from);
-            dateTo = formatter.parse(to);
+        DateTimeFormatter parser = ISODateTimeFormat.dateTime();
+        DateTime dateFrom = parser.parseDateTime(from);
+        DateTime dateTo = parser.parseDateTime(to);
 
-            if ((now.getTimeInMillis() >= dateFrom.getTime()) && (now.getTimeInMillis() <= dateTo.getTime())) {
-                result = true;
-            }
-        } catch (ParseException e) {
-            e.printStackTrace();
+        int comparator = dateFrom.compareTo(dateTo);
+
+        if (dateFrom.isBeforeNow() && dateTo.isAfterNow()) {
+            result = true;
         }
 
         return result;

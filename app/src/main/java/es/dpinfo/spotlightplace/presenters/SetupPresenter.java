@@ -14,6 +14,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import es.dpinfo.spotlightplace.R;
 import es.dpinfo.spotlightplace.interfaces.ISetupMvp;
 import es.dpinfo.spotlightplace.models.User;
 import es.dpinfo.spotlightplace.preferences.AccountPreferences;
@@ -52,15 +53,11 @@ public class SetupPresenter implements ISetupMvp.Presenter {
     @Override
     public void checkAccountPreferences(final Context context) {
 
-        Log.d("Verdad?", String.valueOf(AccountPreferences.getInstance(context).accountPrefsExists()));
-
         if (AccountPreferences.getInstance(context).accountPrefsExists()) {
 
             requestUserDataListener = new SetupPresenter.RequestUserDataListener() {
                 @Override
                 public void onRequestUserResponseSuccess(JSONObject jsonObj) {
-
-                    Log.d("Response", jsonObj.toString());
 
                     if (jsonObj.length() > 0) {
                         String number = "";
@@ -84,6 +81,7 @@ public class SetupPresenter implements ISetupMvp.Presenter {
                 @Override
                 public void onRequestUserErrorResponse(String error) {
                     Log.d("Error", error);
+                    view.setMessageError(R.string.connection_error);
                 }
             };
 
@@ -123,7 +121,6 @@ public class SetupPresenter implements ISetupMvp.Presenter {
             queue.add(getRequest);
 
         } else {
-            Log.d("Hola", "caracola");
             view.loadAskNumberFragment();
         }
     }
@@ -196,9 +193,6 @@ public class SetupPresenter implements ISetupMvp.Presenter {
         String email = "";
         String typeAcc = "";
         String apiKey = "";
-
-        Log.d("Response", jsonObj.toString());
-
         try {
             id = jsonObj.get(SpotlightContract.UserEntry.KEY_ID).toString();
             numberPhone = jsonObj.getString(SpotlightContract.UserEntry.KEY_NUMBER_PHONE);
