@@ -4,12 +4,14 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -35,6 +37,7 @@ import java.util.Date;
 import de.hdodenhof.circleimageview.CircleImageView;
 import es.dpinfo.spotlightplace.R;
 import es.dpinfo.spotlightplace.models.SpotPlace;
+import es.dpinfo.spotlightplace.preferences.AccountPreferences;
 import es.dpinfo.spotlightplace.repository.ApiDAO;
 import es.dpinfo.spotlightplace.schemas.SpotlightContract;
 
@@ -44,8 +47,14 @@ import es.dpinfo.spotlightplace.schemas.SpotlightContract;
 
 public class PlacesAdapter extends ArrayAdapter<SpotPlace> implements ApiDAO.GmapsRequestStatus {
 
+    public static final int RELEVANT_PLACES = 10;
+    public static final int IN_PROGRESS_PLACES = 11;
+    public static final int SCHEDULED_PLACES = 12;
+    public static final int PAST_PLACES = 13;
+
     private RequestQueue queue;
     private RequestUserDataListener requestUserDataListener;
+    private int type;
 
     public interface RequestUserDataListener {
         void onResponseSuccess(String nick, String fullName, String profileImg);
@@ -53,8 +62,9 @@ public class PlacesAdapter extends ArrayAdapter<SpotPlace> implements ApiDAO.Gma
 
     private PlaceHolder holder;
 
-    public PlacesAdapter(Context context, int resource) {
+    public PlacesAdapter(Context context, int resource, int type) {
         super(context, resource);
+        this.type = type;
     }
 
     public void addPlace(SpotPlace spotPlace) {
@@ -74,6 +84,7 @@ public class PlacesAdapter extends ArrayAdapter<SpotPlace> implements ApiDAO.Gma
             view = inflater.inflate(R.layout.item_place, null);
 
             holder = new PlaceHolder();
+            holder.cwItemPlace = (CardView) view.findViewById(R.id.cw_item_place);
             holder.fabLocation = (FloatingActionButton) view.findViewById(R.id.fab_location_item_event_list);
             holder.fabViewMore = (FloatingActionButton) view.findViewById(R.id.fab_view_more_item_event_list);
             holder.imvItemEventsList = (ImageView) view.findViewById(R.id.imv_item_places_list);
@@ -104,6 +115,20 @@ public class PlacesAdapter extends ArrayAdapter<SpotPlace> implements ApiDAO.Gma
         holder.txvDescriptionItemEventsList.setText(item.getmDescription());
         ApiDAO.getInstance().setAddressFormatted(this, item.getmAddress());
         holder.txvPeopleEventsList.setText(String.valueOf(item.getmUsersIn().size()));
+
+        switch (type) {
+            case PAST_PLACES:
+                /*if (!((checkDateTimePast(item.getmDateTimeTo())) && item.getmCreatorId().equals(AccountPreferences.getInstance(getContext()).getId()))) {
+                    holder.cwItemPlace.setLayoutParams(new CardView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0));
+                }*/
+
+                if (!(item.getmCreatorId().equals(AccountPreferences.getInstance(getContext()).getId()))) {
+                    holder.cwItemPlace.setLayoutParams(new CardView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0));
+                }
+
+                break;
+        }
+
         return view;
     }
 
@@ -122,6 +147,7 @@ public class PlacesAdapter extends ArrayAdapter<SpotPlace> implements ApiDAO.Gma
     }
 
     class PlaceHolder {
+        CardView cwItemPlace;
         ImageView imvItemEventsList;
         CircleImageView imvUserItemEventsList;
         TextView txvTitleItemEventsList, txvDescriptionItemEventsList, txvAddressItemEventsList, txvUserItemEventsList, txvPeopleEventsList;
@@ -132,14 +158,26 @@ public class PlacesAdapter extends ArrayAdapter<SpotPlace> implements ApiDAO.Gma
         new GetUserData().execute(new Integer[]{new Integer(item)});
     }
 
+    public boolean checkDateTimePast(String to) {
+        boolean result = false;
+
+        DateTimeFormatter parser = ISODateTimeFormat.dateTime();
+        DateTime dateTo = parser.parseDateTime(to);
+
+        if (dateTo.isBeforeNow()) {
+            result = true;
+            Log.d("Evento pasado", "true");
+        }
+
+        return result;
+    }
+
     public boolean checkDateTime(String from, String to) {
         boolean result = false;
 
         DateTimeFormatter parser = ISODateTimeFormat.dateTime();
         DateTime dateFrom = parser.parseDateTime(from);
         DateTime dateTo = parser.parseDateTime(to);
-
-        int comparator = dateFrom.compareTo(dateTo);
 
         if (dateFrom.isBeforeNow() && dateTo.isAfterNow()) {
             result = true;
