@@ -38,11 +38,11 @@ import es.dpinfo.spotlightplace.schemas.SpotlightContract;
 public class ApiDAO {
 
     private RequestQueue queue;
-    private static final String URL_PLACES = "https://api-spotlight-vipsr.c9users.io:8080/api/v1/places";
-    private static final String URL_USERS = "https://api-spotlight-vipsr.c9users.io:8080/api/v1/users/";
-    public static final String URL_USER_BYID = "https://api-spotlight-vipsr.c9users.io:8080/api/v1/user/id/";
-    public static final String URL_USER_BYNUMBER = "https://api-spotlight-vipsr.c9users.io:8080/api/v1/user/numberphone/";
-    private static final String URL_SETUP = "https://api-spotlight-vipsr.c9users.io:8080/api/v1/setup/";
+    private static final String URL_PLACES = "http://198.211.120.55:8080/api/v1/places";
+    private static final String URL_USERS = "http://198.211.120.55:8080/api/v1/users/";
+    public static final String URL_USER_BYID = "http://198.211.120.55:8080/api/v1/user/id/";
+    public static final String URL_USER_BYNUMBER = "http://198.211.120.55:8080/api/v1/user/numberphone/";
+    private static final String URL_SETUP = "http://198.211.120.55:8080/api/v1/setup/";
     private static final String URL_ADDRESS_START = "http://maps.googleapis.com/maps/api/geocode/json?latlng=";
     private static final String URL_ADDRESS_END = "&sensor=true";
     private AllPlacesApiRequestListener allPlacesApiRequestListener;

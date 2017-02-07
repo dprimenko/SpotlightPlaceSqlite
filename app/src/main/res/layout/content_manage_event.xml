@@ -169,7 +169,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/til_title_manage_event"
                         android:textCursorDrawable="@null"
-                        android:hint="@string/tilAddressManageEvent"
+                        android:text="@string/tilAddressManageEvent"
                         android:textColorHint="@color/colorText"
                         android:textColor="@color/colorText"
                         android:singleLine="true"
