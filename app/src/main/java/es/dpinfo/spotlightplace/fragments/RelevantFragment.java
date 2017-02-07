@@ -235,7 +235,7 @@ public class RelevantFragment extends Fragment implements IPlaceListMvp.View, Ap
             @Override
             public void onRefresh() {
 
-                adapter = new PlacesAdapter(getActivity(), R.layout.item_place);
+                adapter = new PlacesAdapter(getActivity(), R.layout.item_place, PlacesAdapter.RELEVANT_PLACES);
                 lwPlaces.setAdapter(adapter);
 
                 presenter.requestPlaces(RelevantFragment.this);
@@ -246,7 +246,7 @@ public class RelevantFragment extends Fragment implements IPlaceListMvp.View, Ap
             @Override
             public void run() {
 
-                adapter = new PlacesAdapter(getActivity(), R.layout.item_place);
+                adapter = new PlacesAdapter(getActivity(), R.layout.item_place, PlacesAdapter.RELEVANT_PLACES);
                 lwPlaces.setAdapter(adapter);
 
                 presenter.requestPlaces(RelevantFragment.this);
