@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import org.json.JSONObject;
 
+import es.dpinfo.spotlightplace.db.DatabaseHelper;
 import es.dpinfo.spotlightplace.fragments.AskNumberFragment;
 import es.dpinfo.spotlightplace.fragments.EditProfileFragment;
 import es.dpinfo.spotlightplace.fragments.LoadingFragment;

@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 
 import es.dpinfo.spotlightplace.R;
+import es.dpinfo.spotlightplace.db.DatabaseHelper;
 import es.dpinfo.spotlightplace.interfaces.IVerifyMvp;
 import es.dpinfo.spotlightplace.presenters.VerifyNumPresenter;
 import es.dpinfo.spotlightplace.schemas.SpotlightContract;
@@ -58,6 +59,8 @@ public class AskNumberFragment extends Fragment implements IVerifyMvp.View {
             btnOkAskNumberLogin = (Button) rootView.findViewById(R.id.btn_ok_ask_number_login);
             rlAskNumberLogin = (RelativeLayout) rootView.findViewById(R.id.rl_ask_numberphone);
             setOnClickListeners();
+
+
         }
     }
 

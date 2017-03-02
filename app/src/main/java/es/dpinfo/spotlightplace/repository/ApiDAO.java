@@ -26,6 +26,7 @@ import java.util.List;
 
 import cz.msebera.android.httpclient.HttpResponse;
 import cz.msebera.android.httpclient.impl.client.DefaultHttpClient;
+import es.dpinfo.spotlightplace.SpotlightApplication;
 import es.dpinfo.spotlightplace.adapters.PlacesRecycler;
 import es.dpinfo.spotlightplace.models.SpotPlace;
 import es.dpinfo.spotlightplace.models.User;
@@ -233,14 +234,14 @@ public class ApiDAO {
         queue.add(postRequest);
     }
 
-    public void setAddressFormatted(PlacesAdapter adapter, String address) {
+    public void setAddressFormatted(BaseAdapter adapter, String address) {
         try {
             gmapsRequestStatus = (GmapsRequestStatus) adapter;
         } catch (ClassCastException e) {
             throw new ClassCastException(adapter.getClass().getName() + " must implement GmapsRequestStatus");
         }
 
-        getAddressData(adapter.getContext(), address);
+        getAddressData(SpotlightApplication.getContext(), address);
     }
 
     public void setAddressFormatted(PlacesRecycler adapter, String address) {

@@ -17,6 +17,7 @@ public class SpotPlace {
     private String mDateTimeFrom;
     private String mDateTimeTo;
     private List<String> mUsersIn;
+    private int mUsersInInt;
 
 
     public String getmTitle() {
@@ -99,6 +100,14 @@ public class SpotPlace {
         this.mUsersIn = mUsersIn;
     }
 
+    public int getmUsersInInt() {
+        return mUsersInInt;
+    }
+
+    public void setmUsersInInt(int mUsersInInt) {
+        this.mUsersInInt = mUsersInInt;
+    }
+
     @Override
     public boolean equals(Object o) {
         boolean result = false;
@@ -161,5 +170,19 @@ public class SpotPlace {
         this.mDateTimeFrom = datetimeFrom;
         this.mDateTimeTo = datetimeTo;
         this.mUsersIn = usersIn;
+    }
+
+    public SpotPlace(String id, String creatorId, String title, String img, String address, String description, String category, String datetimeFrom, String datetimeTo, int usersIn) {
+
+        this.mId = id;
+        this.mCreatorId = creatorId;
+        this.mTitle = title;
+        this.mImg = img;
+        this.mAddress = address;
+        this.mDescription = description;
+        this.mCategory = category;
+        this.mDateTimeFrom = datetimeFrom;
+        this.mDateTimeTo = datetimeTo;
+        this.mUsersInInt = usersIn;
     }
 }

@@ -1,6 +1,7 @@
 package es.dpinfo.spotlightplace.fragments;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -10,6 +11,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.CursorAdapter;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -30,36 +32,33 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import es.dpinfo.spotlightplace.MainActivity;
 import es.dpinfo.spotlightplace.R;
 import es.dpinfo.spotlightplace.adapters.PlacesAdapter;
+import es.dpinfo.spotlightplace.adapters.PlacesCursorAdapter;
+import es.dpinfo.spotlightplace.interfaces.IListPlacesPresenter;
+import es.dpinfo.spotlightplace.interfaces.IListPresenter;
 import es.dpinfo.spotlightplace.interfaces.IPlaceListMvp;
 import es.dpinfo.spotlightplace.models.SpotPlace;
 import es.dpinfo.spotlightplace.preferences.AccountPreferences;
+import es.dpinfo.spotlightplace.presenters.ListPlacesPresenter;
 import es.dpinfo.spotlightplace.presenters.PlacesListPresenter;
 import es.dpinfo.spotlightplace.repository.ApiDAO;
 
 /**
  * Created by dprimenko on 3/01/17.
  */
-public class RelevantFragment extends Fragment implements IPlaceListMvp.View, ApiDAO.AllPlacesApiRequestListener{
+public class RelevantFragment extends Fragment implements IListPlacesPresenter.View {
 
 
     private CoordinatorLayout clMainFragment;
     private FloatingActionButton fabAddEvent;
     private MainFragmentListener mCallback;
     private ListView lwPlaces;
-    private PlacesAdapter adapter;
-    private SwipeRefreshLayout swipe;
-    private PlacesListPresenter presenter;
+    private PlacesCursorAdapter adapter;
+    private ListPlacesPresenter presenter;
     private View navigationHeader;
     private LinearLayout llNavigation;
     private CircleImageView imvNavigationProfile;
     private TextView txvFullNameNavigation, txvEmailNavigation;
     private Target targetBackground;
-
-
-    @Override
-    public PlacesAdapter getAdapter() {
-        return adapter;
-    }
 
 
     public interface MainFragmentListener {
@@ -77,6 +76,8 @@ public class RelevantFragment extends Fragment implements IPlaceListMvp.View, Ap
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        setRetainInstance(true);
+        adapter = new PlacesCursorAdapter(getActivity(), null, IListPresenter.PLACE);
     }
 
     @Override
@@ -102,12 +103,11 @@ public class RelevantFragment extends Fragment implements IPlaceListMvp.View, Ap
 
         final View rootView = view;
 
-        presenter = new PlacesListPresenter(this);
+        presenter = new ListPlacesPresenter(this);
 
         clMainFragment = (CoordinatorLayout) rootView.findViewById(R.id.cl_main_fragment);
         fabAddEvent = (FloatingActionButton) rootView.findViewById(R.id.fab_add_place);
 
-        swipe = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_list_places);
 
         ((AppCompatActivity)getActivity()).getSupportActionBar().setIcon(R.mipmap.ic_launcher_spotlight);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(getString(R.string.app_name));
@@ -177,38 +177,6 @@ public class RelevantFragment extends Fragment implements IPlaceListMvp.View, Ap
 
     }
 
-    @Override
-    public void onPreExecuteAllPlacesRequest() {
-        swipe.setRefreshing(true);
-    }
-
-    @Override
-    public void onDoInBackgroundAllPlacesRequest(SpotPlace spotPlace) {
-        addPlace(spotPlace);
-    }
-
-    @Override
-    public void onPostExecuteAllPlacesRequest() {
-        swipe.setRefreshing(false);
-    }
-
-    public void addPlace(final SpotPlace spotPlace) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                getActivity().runOnUiThread(new Runnable() {
-                    public void run() {
-                        presenter.addPlaceToAdapter(spotPlace);
-                    }
-                });
-            }
-        }).start();
-    }
-
-    @Override
-    public void setMessageError(int error) {
-        Snackbar.make(clMainFragment, getString(error), Snackbar.LENGTH_LONG).show();
-    }
 
     private void loadInfoNavigation() {
 
@@ -231,26 +199,20 @@ public class RelevantFragment extends Fragment implements IPlaceListMvp.View, Ap
             }
         });
 
-        swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
+        presenter.getAllFields(adapter);
 
-                adapter = new PlacesAdapter(getActivity(), R.layout.item_place, PlacesAdapter.RELEVANT_PLACES);
-                lwPlaces.setAdapter(adapter);
+        lwPlaces.setAdapter(adapter);
+    }
 
-                presenter.requestPlaces(RelevantFragment.this);
-            }
-        });
+    @Override
+    public CursorAdapter getCursorAdapter() {
+        return adapter;
+    }
 
-        swipe.post(new Runnable() {
-            @Override
-            public void run() {
-
-                adapter = new PlacesAdapter(getActivity(), R.layout.item_place, PlacesAdapter.RELEVANT_PLACES);
-                lwPlaces.setAdapter(adapter);
-
-                presenter.requestPlaces(RelevantFragment.this);
-            }
-        });
+    @Override
+    public void setCursor(Cursor cursor) {
+        if (cursor != null) {
+            adapter.swapCursor(cursor);
+        }
     }
 }

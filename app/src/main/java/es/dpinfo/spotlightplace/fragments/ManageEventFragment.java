@@ -3,12 +3,14 @@ package es.dpinfo.spotlightplace.fragments;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.CursorAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.menu.MenuBuilder;
 import android.support.v7.widget.Toolbar;
@@ -47,6 +49,7 @@ import java.util.Date;
 import java.util.TimeZone;
 
 import es.dpinfo.spotlightplace.R;
+import es.dpinfo.spotlightplace.interfaces.IListPlacesPresenter;
 import es.dpinfo.spotlightplace.interfaces.IManageEventMvp;
 import es.dpinfo.spotlightplace.models.SpotPlace;
 import es.dpinfo.spotlightplace.preferences.AccountPreferences;
@@ -59,7 +62,7 @@ import com.google.android.gms.location.places.Place;
 /**
  * Created by dprimenko on 3/01/17.
  */
-public class ManageEventFragment extends Fragment implements TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener, IManageEventMvp.View, ApiDAO.UploadPlaceListener{
+public class ManageEventFragment extends Fragment implements TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener, IListPlacesPresenter.View {
 
     private ManageEventPresenter presenter;
 
@@ -330,23 +333,6 @@ public class ManageEventFragment extends Fragment implements TimePickerDialog.On
         timeSelectedTo = formatterTime.format(now.getTime());
     }
 
-    @Override
-    public void onUploadPlaceSuccess(JSONObject response) {
-        pd.dismiss();
-        mCallback.onMainFragment();
-    }
-
-    @Override
-    public void onUploadPlaceError(String error) {
-        Log.d("ErrorUpload", error);
-        pd.dismiss();
-    }
-
-    @Override
-    public void setMessageError(int messageError) {
-        Snackbar.make(clManageEvent, getString(messageError), Snackbar.LENGTH_LONG).show();
-    }
-
     private void loadMenuManageEvent() {
         toolbarManageEvent.inflateMenu(R.menu.menu_manage_event);
         toolbarManageEvent.setNavigationIcon(R.drawable.arrow_left);
@@ -396,5 +382,20 @@ public class ManageEventFragment extends Fragment implements TimePickerDialog.On
                 mCallback.onMainFragment();
             }
         });
+    }
+
+    @Override
+    public void showMessageError(int error) {
+
+    }
+
+    @Override
+    public CursorAdapter getCursorAdapter() {
+        return null;
+    }
+
+    @Override
+    public void setCursor(Cursor cursor) {
+
     }
 }
