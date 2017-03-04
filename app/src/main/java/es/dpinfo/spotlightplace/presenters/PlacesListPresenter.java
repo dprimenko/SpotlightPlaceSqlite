@@ -1,6 +1,7 @@
 package es.dpinfo.spotlightplace.presenters;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 
@@ -17,7 +18,7 @@ public class PlacesListPresenter implements IPlaceListMvp.Presenter {
     private IPlaceListMvp.View view;
 
     public interface ActionsFragmentListener {
-        void onMainFragment();
+        void onMainFragment(Bundle bundle);
     }
 
     public PlacesListPresenter(IPlaceListMvp.View view) {

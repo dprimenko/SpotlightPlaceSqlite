@@ -60,6 +60,11 @@ public class RelevantFragment extends Fragment implements IListPlacesPresenter.V
     private TextView txvFullNameNavigation, txvEmailNavigation;
     private Target targetBackground;
 
+    @Override
+    public void showMessageError(int error) {
+        Snackbar.make(clMainFragment, getString(error), Snackbar.LENGTH_LONG).show();
+    }
+
 
     public interface MainFragmentListener {
         void onManageEventFragment();
@@ -78,6 +83,11 @@ public class RelevantFragment extends Fragment implements IListPlacesPresenter.V
         setHasOptionsMenu(true);
         setRetainInstance(true);
         adapter = new PlacesCursorAdapter(getActivity(), null, IListPresenter.PLACE);
+
+        if (getArguments() != null) {
+            Bundle bundle = getArguments();
+            presenter.addPlace((SpotPlace) bundle.getParcelable("place"));
+        }
     }
 
     @Override

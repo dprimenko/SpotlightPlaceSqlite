@@ -6,8 +6,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,15 +16,11 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.google.android.gms.common.api.Api;
 import com.squareup.picasso.Picasso;
-
-import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import es.dpinfo.spotlightplace.R;
 import es.dpinfo.spotlightplace.adapters.PlacesAdapter;
-import es.dpinfo.spotlightplace.adapters.PlacesRecycler;
 import es.dpinfo.spotlightplace.models.SpotPlace;
 import es.dpinfo.spotlightplace.preferences.AccountPreferences;
 import es.dpinfo.spotlightplace.presenters.PlacesListPresenter;
@@ -131,7 +125,7 @@ public class ProfileFragment extends Fragment implements ApiDAO.AllPlacesApiRequ
         if (item.getItemId() == R.id.action_edit_profile) {
             profileFragmentListener.onEditProfileFragment();
         } else if(item.getItemId() == android.R.id.home) {
-            mCallback.onMainFragment();
+            mCallback.onMainFragment(null);
         }
 
         return true;

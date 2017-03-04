@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements RelevantFragment.
     }
 
     @Override
-    public void onMainFragment() {
+    public void onMainFragment(Bundle bundle) {
 
         relevantFragment = RelevantFragment.newInstance(null);
 

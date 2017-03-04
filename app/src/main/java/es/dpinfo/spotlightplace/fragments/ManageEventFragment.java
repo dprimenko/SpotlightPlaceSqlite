@@ -3,21 +3,14 @@ package es.dpinfo.spotlightplace.fragments;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.CursorAdapter;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.view.menu.MenuBuilder;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,8 +31,6 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
-import org.joda.time.format.ISODateTimeFormat;
-import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -49,20 +40,18 @@ import java.util.Date;
 import java.util.TimeZone;
 
 import es.dpinfo.spotlightplace.R;
-import es.dpinfo.spotlightplace.interfaces.IListPlacesPresenter;
 import es.dpinfo.spotlightplace.interfaces.IManageEventMvp;
 import es.dpinfo.spotlightplace.models.SpotPlace;
 import es.dpinfo.spotlightplace.preferences.AccountPreferences;
 import es.dpinfo.spotlightplace.presenters.ManageEventPresenter;
 import es.dpinfo.spotlightplace.presenters.PlacesListPresenter;
-import es.dpinfo.spotlightplace.repository.ApiDAO;
 
 import com.google.android.gms.location.places.Place;
 
 /**
  * Created by dprimenko on 3/01/17.
  */
-public class ManageEventFragment extends Fragment implements TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener, IListPlacesPresenter.View {
+public class ManageEventFragment extends Fragment implements TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener, IManageEventMvp.View{
 
     private ManageEventPresenter presenter;
 
@@ -366,10 +355,11 @@ public class ManageEventFragment extends Fragment implements TimePickerDialog.On
 
 
                     if (presenter.validateFields(place)) {
-                        presenter.uploadPlace(ManageEventFragment.this, place);
-                        pd = new ProgressDialog(getActivity());
-                        pd.setMessage(getResources().getString(R.string.upload_message));
-                        pd.show();
+
+                        Bundle bundle = new Bundle();
+                        bundle.putParcelable("place", place);
+
+                        mCallback.onMainFragment(bundle);
                     }
                 }
                 return true;
@@ -379,23 +369,13 @@ public class ManageEventFragment extends Fragment implements TimePickerDialog.On
         toolbarManageEvent.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mCallback.onMainFragment();
+                mCallback.onMainFragment(null);
             }
         });
     }
 
     @Override
-    public void showMessageError(int error) {
-
-    }
-
-    @Override
-    public CursorAdapter getCursorAdapter() {
-        return null;
-    }
-
-    @Override
-    public void setCursor(Cursor cursor) {
-
+    public void setMessageError(int messageError) {
+        Snackbar.make(clManageEvent, getActivity().getResources().getString(messageError), Snackbar.LENGTH_LONG).show();
     }
 }

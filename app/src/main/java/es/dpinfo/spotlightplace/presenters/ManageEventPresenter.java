@@ -29,7 +29,7 @@ public class ManageEventPresenter implements IManageEventMvp.Presenter {
 
         boolean result = false;
 
-        if (TextUtils.isEmpty(place.getmTitle()) || TextUtils.isEmpty(place.getmAddress())) {
+        if (TextUtils.isEmpty(place.getmTitle())) {
             view.setMessageError(R.string.data_empty);
         } else {
             result = true;

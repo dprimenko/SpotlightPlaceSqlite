@@ -1,11 +1,14 @@
 package es.dpinfo.spotlightplace.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.List;
 
 /**
  * Created by dprimenko on 10/11/16.
  */
-public class SpotPlace {
+public class SpotPlace implements Parcelable {
 
     private String mId;
     private String mCreatorId;
@@ -19,6 +22,52 @@ public class SpotPlace {
     private List<String> mUsersIn;
     private int mUsersInInt;
 
+
+    protected SpotPlace(Parcel in) {
+        mId = in.readString();
+        mCreatorId = in.readString();
+        mTitle = in.readString();
+        mImg = in.readString();
+        mAddress = in.readString();
+        mDescription = in.readString();
+        mCategory = in.readString();
+        mDateTimeFrom = in.readString();
+        mDateTimeTo = in.readString();
+        mUsersIn = in.createStringArrayList();
+        mUsersInInt = in.readInt();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(mId);
+        dest.writeString(mCreatorId);
+        dest.writeString(mTitle);
+        dest.writeString(mImg);
+        dest.writeString(mAddress);
+        dest.writeString(mDescription);
+        dest.writeString(mCategory);
+        dest.writeString(mDateTimeFrom);
+        dest.writeString(mDateTimeTo);
+        dest.writeStringList(mUsersIn);
+        dest.writeInt(mUsersInInt);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<SpotPlace> CREATOR = new Creator<SpotPlace>() {
+        @Override
+        public SpotPlace createFromParcel(Parcel in) {
+            return new SpotPlace(in);
+        }
+
+        @Override
+        public SpotPlace[] newArray(int size) {
+            return new SpotPlace[size];
+        }
+    };
 
     public String getmTitle() {
         return mTitle;

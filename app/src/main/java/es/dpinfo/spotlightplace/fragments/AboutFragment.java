@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import es.dpinfo.spotlightplace.R;
@@ -74,7 +73,7 @@ public class AboutFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if (item.getItemId() == android.R.id.home) {
-            mCallback.onMainFragment();
+            mCallback.onMainFragment(null);
         }
 
         return true;

@@ -142,7 +142,7 @@ public class EditProfileFragment extends Fragment implements ApiDAO.UpdateUserAp
     @Override
     public void onUpdateUserResponseSuccess() {
         if (getArguments().getBoolean("initial")) {
-            callbackMain.onMainFragment();
+            callbackMain.onMainFragment(null);
         } else {
             mCallback.onProfileFragment();
         }
